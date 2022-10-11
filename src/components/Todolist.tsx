@@ -1,14 +1,14 @@
 import React from 'react';
 
-type TodolistPropsType = {
-    title: string,
-    tasks: Array<ObjectType>,
-}
-
 type ObjectType = {
     id: number,
     title: string,
     isDone: boolean,
+}
+
+type TodolistPropsType = {
+    title: string,
+    tasks: Array<ObjectType>,
 }
 
 export const Todolist = (props: TodolistPropsType) => {
