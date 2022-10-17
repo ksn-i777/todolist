@@ -2,63 +2,70 @@ import React, { useState } from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist';
 
-function App() {
+export function App() {
 
-    const title1="What to learn";
-    const title2="Songs";
+    const title_1="What to learn";  
+    const title_2="Songs";  
 
-    const initialTasks1 = [
+    const initialTasks_1 = [
         { id: 1, title: "HTML&CSS", isDone: true },
         { id: 2, title: "JS", isDone: true },
         { id: 3, title: "ReactJS", isDone: false },
-    ];
-    const initialTasks2 = [
+    ];    
+    const initialTasks_2 = [
         { id: 1, title: "Hello world", isDone: true },
         { id: 2, title: "I am Happy", isDone: false },
         { id: 3, title: "Yo", isDone: false },
     ];
 
-    let [tasks1, useTasks1] = useState(initialTasks1);
-    let [tasks2, useTasks2] = useState(initialTasks2);
-    let [status1, useStatus1] = useState("all");
-    let [status2, useStatus2] = useState("all");
+    let [tasks_1, setTasks_1] = useState(initialTasks_1);
+    let [tasks_2, setTasks_2] = useState(initialTasks_2);
 
-    let tasksWithStatus1 = tasks1;
-    let tasksWithStatus2 = tasks2;
+    const removeTask_1 = (id: number) => {
+        setTasks_1(tasks_1.filter((el) => el.id !== id))
+    }; 
+    const removeTask_2 = (id: number) => {
+        setTasks_2(tasks_2.filter((el) => el.id !== id))
+    }; 
 
-    if (status1 === "active") {
-        tasksWithStatus1 = tasks1.filter(el => el.isDone == false)
-    } else if (status1 === "completed") {
-        tasksWithStatus1 = tasks1.filter(el => el.isDone == true)
-    }
-    if (status2 === "active") {
-        tasksWithStatus2 = tasks2.filter(el => el.isDone == false)
-    } else if (status2 === "completed") {
-        tasksWithStatus2 = tasks2.filter(el => el.isDone == true)
-    }
+    const [status_1, setStatus_1] = useState('all');
+    const [status_2, setStatus_2] = useState('all');
 
-    let useRemoveTasks1 = (id: number) => {
-        let filteredTasksById1 = tasks1.filter(el => el.id !== id);
-        useTasks1(filteredTasksById1);
-    };
-    let useRemoveTasks2 = (id: number) => {
-        let filteredTasksById2 = tasks2.filter(el => el.id !== id);
-        useTasks2(filteredTasksById2);
-    };
-    let useFilterTasks1 = (value: string) => {
-        useStatus1(value);
-    };
-    let useFilterTasks2 = (value: string) => {
-        useStatus2(value);
-    };
+    let filteredTasks_1 = tasks_1;
+    let filteredTasks_2 = tasks_2;
 
+    if (status_1 === 'active') {
+        filteredTasks_1 = tasks_1.filter((el) => el.isDone === false)
+    } else if (status_1 === 'completed') {
+        filteredTasks_1 = tasks_1.filter((el) => el.isDone === true)
+    };
+    if (status_2 === 'active') {
+        filteredTasks_2 = tasks_2.filter((el) => el.isDone === false)
+    } else if (status_2 === 'completed') {
+        filteredTasks_2 = tasks_2.filter((el) => el.isDone === true)
+    };
     
+    const filterTasks_1 = (value: string) => {
+        setStatus_1(value)
+    };
+    const filterTasks_2 = (value: string) => {
+        setStatus_2(value)
+    };
+           
     return (
         <div className="App">            
-            <Todolist title={title1} tasks={tasksWithStatus1} removeTasks={useRemoveTasks1} filterTasks={useFilterTasks1}/>
-            <Todolist title={title2} tasks={tasksWithStatus2} removeTasks={useRemoveTasks2} filterTasks={useFilterTasks2}/>
+            <Todolist
+                title={title_1}
+                tasks={filteredTasks_1}
+                removeTask={removeTask_1}
+                filterTasks={filterTasks_1}
+            />    
+            <Todolist
+                title={title_2}
+                tasks={filteredTasks_2}
+                removeTask={removeTask_2}
+                filterTasks={filterTasks_2}
+            />     
         </div>
     );
-}
-
-export default App;
+};
