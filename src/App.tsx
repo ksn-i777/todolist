@@ -24,12 +24,12 @@ export function App() {
             isDone: false,
         };
         setTasks([newTask, ...tasks]);
-    };
+    }
 
     function removeTask (taskId: string) {
         let filteredTasksById = tasks.filter(task => task.id !== taskId);
         setTasks(filteredTasksById);
-    };
+    }
 
     const [filter, setFilter] = useState<FilterValuesType>('all');
 
@@ -38,11 +38,17 @@ export function App() {
         filteredTasksByFilter = tasks.filter(task => !task.isDone);
     } else if (filter === 'completed') {
         filteredTasksByFilter = tasks.filter(task => task.isDone);
-    };
+    }
 
     function changeFilter (value: FilterValuesType) {
         setFilter(value);
-    };
+    }
+
+    function changeTaskStatus (taskId: string, isDone: boolean) {
+        let foundTask = tasks.find(task => task.id === taskId)
+        if (foundTask) {foundTask.isDone = isDone}
+        setTasks([...tasks])
+    }
 
     return (
         <div className="App">            
@@ -52,6 +58,8 @@ export function App() {
                 addTask={addTask}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                changeTaskStatus={changeTaskStatus}
+                filter={filter}
             />
         </div>
     );
