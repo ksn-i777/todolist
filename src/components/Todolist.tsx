@@ -50,6 +50,10 @@ export function Todolist(props: TodolistPropsType) {
         setNewTitle(e.currentTarget.value);
     }
 
+    /* const removeTaskHandler = (taskId: string) => {
+        props.removeTask(taskId)
+    } */
+
     return (
         <div>
             <h3>{props.title}</h3>
@@ -82,7 +86,7 @@ export function Todolist(props: TodolistPropsType) {
                                 onChange={changeTaskStatusHandler}
                             />
                             <span>{task.title}</span>
-                            <button onClick={removeTaskHandler}>x</button>
+                            <Button name={'x'} callback={removeTaskHandler/* () => removeTaskHandler(task.id) */}/>
                         </li>
                     )})
                 }
