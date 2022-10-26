@@ -5,7 +5,7 @@ import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
-export function App() {
+function App() {
 
     const title="What to learn";
 
@@ -64,3 +64,4 @@ export function App() {
         </div>
     );
 }
+export default App
