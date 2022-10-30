@@ -27,3 +27,7 @@ input::placeholder {
 .isDone {
   opacity: 0.5;
 }
+
+.h3 {
+  font-size: large;
+}
