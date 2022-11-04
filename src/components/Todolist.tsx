@@ -33,8 +33,8 @@ export function Todolist(props: TodolistPropsType) {
         props.removeTask(taskID, props.todolistID);
     }
 
-    function onChangeFilter(value: FilterValuesType, todolistID: string) {
-        props.changeFilter(value, todolistID);
+    function onChangeFilter(value: FilterValuesType) {
+        props.changeFilter(value, props.todolistID);
     }
 
     function onChangeTaskStatus(e: ChangeEvent<HTMLInputElement>, taskID: string) {
@@ -61,7 +61,7 @@ export function Todolist(props: TodolistPropsType) {
 
     return (
         <div>
-            <span className='h3'><b>{props.title}</b></span><Button name="x" callback={onRemoveTodolist}/>
+            <span className='h3'><b>{props.title}</b></span><Button name="x" className={''} callback={onRemoveTodolist}/>
             <div>
                 <input
                     value={newTaskText}
@@ -70,7 +70,7 @@ export function Todolist(props: TodolistPropsType) {
                     className={error ? 'errorInput' : ''}
                     placeholder={error ? errorMessage : ''}
                 />
-                <Button name="+" callback={onAddTask}/>
+                <Button name="+" className={''} callback={onAddTask}/>
             </div>
             <ul>
                 {props.tasks.map(task => {
@@ -90,24 +90,15 @@ export function Todolist(props: TodolistPropsType) {
                                 onChange={(e) => onChangeTaskStatus(e, task.id)/*onChangeTaskStatus*/}
                             />
                             <span>{task.title}</span>
-                            <Button name={'x'} callback={() => onRemoveTask(task.id)/*onRemoveTask*/}/>
+                            <Button name={'x'} className={''} callback={() => onRemoveTask(task.id)/*onRemoveTask*/}/>
                         </li>
                     )})
                 }
             </ul>
             <div>
-                <button
-                    className={props.filter === 'all' ? 'activeFilter' : ''}
-                    onClick={() => onChangeFilter('all', props.todolistID)}>All
-                </button>
-                <button
-                    className={props.filter === 'active' ? 'activeFilter' : ''}
-                    onClick={() => onChangeFilter('active', props.todolistID)}>Active
-                </button>
-                <button
-                    className={props.filter === 'completed' ? 'activeFilter' : ''}
-                    onClick={() => onChangeFilter('completed', props.todolistID)}>Completed
-                </button>
+                <Button name={'All'} className={props.filter === 'all' ? 'activeFilter' : ''} callback={() => onChangeFilter('all')}/>
+                <Button name={'Active'} className={props.filter === 'active' ? 'activeFilter' : ''} callback={() => onChangeFilter('active')}/>
+                <Button name={'Completed'} className={props.filter === 'completed' ? 'activeFilter' : ''} callback={() => onChangeFilter('completed')}/>
             </div>
         </div>
     )
