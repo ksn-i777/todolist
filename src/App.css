@@ -1,6 +1,14 @@
 .App {
-  padding: 30px;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  padding: 10px 50px;
+}
+
+.todolists {
+  margin-top: 30px;
   display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
 .App > div {
@@ -28,6 +36,18 @@ input::placeholder {
   opacity: 0.5;
 }
 
-.h3 {
-  font-size: large;
+h3 {
+  display: inline;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
 }

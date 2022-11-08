@@ -1,7 +1,9 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import '../App.css';
 import {FilterValuesType, TaskType} from '../App';
-import {Button} from './Button';
+import {UniversalButton} from './UniversalButton';
+import {UniversalAddItemForm} from './UniversalAddItemForm';
+import {UniversalEditableSpan} from './UniversalEditableSpan';
 
 type TodolistPropsType = {
     todolistID: string,
@@ -13,21 +15,11 @@ type TodolistPropsType = {
     changeFilter: (value: FilterValuesType, todolistID: string) => void,
     changeTaskStatus: (taskID: string, isDone: boolean, todolistID: string) => void,
     removeTodolist: (todolistID: string) => void,
+    changeTaskTitle: (todolistID: string, taskID: string, newTaskTitle: string) => void,
+    changeTodolistTitle: (newTodolistTitle: string, todolistID: string) => void,
 };
 
 export function Todolist(props: TodolistPropsType) {
-
-    const [newTaskText, setNewTaskText] = useState('');
-    const [error, setError] = useState('');
-
-    const errorMessage = 'Field is required';
-
-    function onAddTask() {
-        if (newTaskText.trim() !== '') {
-            props.addTask(newTaskText.trim(), props.todolistID);
-            setNewTaskText('');
-        } else {setError(errorMessage)}
-    }
 
     function onRemoveTask(taskID: string) {
         props.removeTask(taskID, props.todolistID);
@@ -45,33 +37,23 @@ export function Todolist(props: TodolistPropsType) {
         props.removeTodolist(props.todolistID);
     }
 
-
-
-    function onChangeInput(e: ChangeEvent<HTMLInputElement>) {
-        if (e.currentTarget.value.trim() !== '') {
-            setError('');
-            setNewTaskText(e.currentTarget.value);
-        } else {setNewTaskText('')}
+    function onAddTask(newInputText: string) {
+        props.addTask(newInputText, props.todolistID)
     }
 
-    function onKeyPress(e: KeyboardEvent<HTMLInputElement>) {
-        if (e.key === 'Enter' && newTaskText.trim() !== '') {onAddTask()}
-        else {setError(errorMessage)}
+    function onChangeTaskTitle(newTaskTitle: string, taskID: string) {
+        props.changeTaskTitle(props.todolistID, taskID, newTaskTitle)
+    }
+
+    function onChangeTodolistTitle(newTodolistTitle: string) {
+        props.changeTodolistTitle(newTodolistTitle, props.todolistID)
     }
 
     return (
         <div>
-            <span className='h3'><b>{props.title}</b></span><Button name="x" className={''} callback={onRemoveTodolist}/>
-            <div>
-                <input
-                    value={newTaskText}
-                    onChange={onChangeInput}
-                    onKeyPress={onKeyPress}
-                    className={error ? 'errorInput' : ''}
-                    placeholder={error ? errorMessage : ''}
-                />
-                <Button name="+" className={''} callback={onAddTask}/>
-            </div>
+            <h3><UniversalEditableSpan title={props.title} changeSpanTitle={onChangeTodolistTitle}/></h3>
+            <UniversalButton name="x" className={''} onClick={onRemoveTodolist}/>
+            <UniversalAddItemForm callback={onAddTask}/>
             <ul>
                 {props.tasks.map(task => {
 
@@ -81,24 +63,27 @@ export function Todolist(props: TodolistPropsType) {
                     /*function onChangeTaskStatus(e: ChangeEvent<HTMLInputElement>) {
                         props.changeTaskStatus(task.id, e.currentTarget.checked, props.todolistID);
                     }*/
+                    /*function onChangeTaskTitle(newTaskTitle: string) {
+                        props.changeTaskTitle(props.todolistID, task.id, newTaskTitle)
+                    }*/
 
                     return (
                         <li key={task.id} className={task.isDone ? 'isDone' : ''}>
+                            <UniversalButton name={'x'} className={''} onClick={() => onRemoveTask(task.id)/*onRemoveTask*/}/>
                             <input
                                 type="checkbox"
                                 checked={task.isDone}
                                 onChange={(e) => onChangeTaskStatus(e, task.id)/*onChangeTaskStatus*/}
                             />
-                            <span>{task.title}</span>
-                            <Button name={'x'} className={''} callback={() => onRemoveTask(task.id)/*onRemoveTask*/}/>
+                            <UniversalEditableSpan title={task.title} changeSpanTitle={(newTaskTitle: string) => {onChangeTaskTitle(newTaskTitle, task.id)}/*onChangeTaskTitle*/}/>
                         </li>
                     )})
                 }
             </ul>
             <div>
-                <Button name={'All'} className={props.filter === 'all' ? 'activeFilter' : ''} callback={() => onChangeFilter('all')}/>
-                <Button name={'Active'} className={props.filter === 'active' ? 'activeFilter' : ''} callback={() => onChangeFilter('active')}/>
-                <Button name={'Completed'} className={props.filter === 'completed' ? 'activeFilter' : ''} callback={() => onChangeFilter('completed')}/>
+                <UniversalButton name={'All'} className={props.filter === 'all' ? 'activeFilter' : ''} onClick={() => onChangeFilter('all')}/>
+                <UniversalButton name={'Active'} className={props.filter === 'active' ? 'activeFilter' : ''} onClick={() => onChangeFilter('active')}/>
+                <UniversalButton name={'Completed'} className={props.filter === 'completed' ? 'activeFilter' : ''} onClick={() => onChangeFilter('completed')}/>
             </div>
         </div>
     )
