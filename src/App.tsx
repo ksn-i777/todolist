@@ -118,9 +118,9 @@ function App() {
     return (
         <div className="App">
             <AppBarComponent/>
-            <Container fixed>
-                <Grid style={{marginTop: '30px', gap: '30px'}} container>
-                    <Paper style={{padding: '10px'}} elevation={3}>
+            <Container style={{padding: '30px', margin: '0', maxWidth: '100%'}} fixed>
+                <Grid container>
+                    <Paper style={{padding: '10px', backgroundColor: ''}} elevation={3}>
                         <Grid item>
                             <div>
                                 <h3>Add new todolist</h3>
@@ -129,7 +129,7 @@ function App() {
                         </Grid>
                     </Paper>
                 </Grid>
-                <Grid style={{marginTop: '30px', gap: '30px'}} container>
+                <Grid style={{marginTop: '30px', justifyContent: 'flex-start', gap: '38px'}} container>
                     {todolists.map(tl => {
 
                         let filteredTasksByFilter = tasks[tl.id];

@@ -96,7 +96,7 @@ export function Todolist(props: TodolistPropsType) {
                     )})
                 }
             </div>
-            <div className={'buttons'}>
+            <div style={{display: 'flex', gap: '5px'}}>
                 {/*<UniversalButton name={'All'} className={props.filter === 'all' ? 'activeFilter' : ''} onClick={() => onChangeFilter('all')}/>
                 <UniversalButton name={'Active'} className={props.filter === 'active' ? 'activeFilter' : ''} onClick={() => onChangeFilter('active')}/>
                 <UniversalButton name={'Completed'} className={props.filter === 'completed' ? 'activeFilter' : ''} onClick={() => onChangeFilter('completed')}/>*/}
