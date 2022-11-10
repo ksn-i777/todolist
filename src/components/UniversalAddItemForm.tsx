@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button, TextField} from '@mui/material';
 
 type UniversalAddItemFormPropsType = {
     callback: (newInputText: string) => void,
@@ -37,16 +38,38 @@ export function UniversalAddItemForm(props: UniversalAddItemFormPropsType) {
         }
     }
 
+    const buttonStyle = {
+        minWidth: '40px',
+        maxWidth: '40px',
+        minHeight: '40px',
+        maxHeight: '40px',
+        border: '1px solid',
+    }
+    const inputStyle = {
+        marginBottom: '25px',
+        marginRight: '10px'
+    }
+
     return (
         <div>
-            <input
+            {/*<input
                 value={newInputText}
                 onChange={onChangeInput}
                 onKeyPress={onKeyPress}
                 className={error ? 'errorInput' : ''}
                 placeholder={error ? errorMessage : ''}
-            />
-            <button onClick={onAddItem}>+</button>
+            />*/}
+            <TextField
+                error={!!error}
+                variant="outlined"
+                size="small"
+                style={inputStyle}
+                label={error ? errorMessage : 'Enter your task'}
+                value={newInputText}
+                onChange={onChangeInput}
+                onKeyPress={onKeyPress}/>
+            {/*<button onClick={onAddItem}>+</button>*/}
+            <Button style={buttonStyle} color='secondary' onClick={onAddItem}>+</Button>
         </div>
     )
 }

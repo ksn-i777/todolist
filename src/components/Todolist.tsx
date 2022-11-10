@@ -4,6 +4,8 @@ import {FilterValuesType, TaskType} from '../App';
 import {UniversalButton} from './UniversalButton';
 import {UniversalAddItemForm} from './UniversalAddItemForm';
 import {UniversalEditableSpan} from './UniversalEditableSpan';
+import {Delete} from '@mui/icons-material';
+import {Button, Checkbox, IconButton} from '@mui/material';
 
 type TodolistPropsType = {
     todolistID: string,
@@ -49,12 +51,22 @@ export function Todolist(props: TodolistPropsType) {
         props.changeTodolistTitle(newTodolistTitle, props.todolistID)
     }
 
+    const styleButton = {
+        minWidth: '40px',
+        maxWidth: '120px',
+        minHeight: '25px',
+        maxHeight: '25px',
+        border: '1px solid',
+        marginTop: '25px'
+    }
+
     return (
         <div>
             <h3><UniversalEditableSpan title={props.title} changeSpanTitle={onChangeTodolistTitle}/></h3>
-            <UniversalButton name="x" className={''} onClick={onRemoveTodolist}/>
+            {/*<UniversalButton name="x" className={''} onClick={onRemoveTodolist}/>*/}
+            <IconButton aria-label="delete" size="small" color="secondary" onClick={onRemoveTodolist}><Delete fontSize="small"/></IconButton>
             <UniversalAddItemForm callback={onAddTask}/>
-            <ul>
+            <div>
                 {props.tasks.map(task => {
 
                     /*function onRemoveTask() {
@@ -68,22 +80,44 @@ export function Todolist(props: TodolistPropsType) {
                     }*/
 
                     return (
-                        <li key={task.id} className={task.isDone ? 'isDone' : ''}>
-                            <UniversalButton name={'x'} className={''} onClick={() => onRemoveTask(task.id)/*onRemoveTask*/}/>
-                            <input
-                                type="checkbox"
-                                checked={task.isDone}
-                                onChange={(e) => onChangeTaskStatus(e, task.id)/*onChangeTaskStatus*/}
-                            />
-                            <UniversalEditableSpan title={task.title} changeSpanTitle={(newTaskTitle: string) => {onChangeTaskTitle(newTaskTitle, task.id)}/*onChangeTaskTitle*/}/>
-                        </li>
+                        <div key={task.id} className={task.isDone ? 'taskDone' : 'task'}>
+                            <div>
+                                {/*<input
+                                    type="checkbox"
+                                    checked={task.isDone}
+                                    onChange={(e) => onChangeTaskStatus(e, task.id)/*onChangeTaskStatus*!/
+                                />*/}
+                                <Checkbox color="secondary" checked={task.isDone} onChange={(e) => onChangeTaskStatus(e, task.id)}/>
+                                <UniversalEditableSpan title={task.title} changeSpanTitle={(newTaskTitle: string) => {onChangeTaskTitle(newTaskTitle, task.id)}/*onChangeTaskTitle*/}/>
+                            </div>
+                            {/*<UniversalButton name={'x'} className={''} onClick={() => onRemoveTask(task.id)/*onRemoveTask*!//>*/}
+                            <IconButton aria-label="delete" size="small" color="secondary" onClick={() => onRemoveTask(task.id)}><Delete fontSize="small"/></IconButton>
+                        </div>
                     )})
                 }
-            </ul>
-            <div>
-                <UniversalButton name={'All'} className={props.filter === 'all' ? 'activeFilter' : ''} onClick={() => onChangeFilter('all')}/>
+            </div>
+            <div className={'buttons'}>
+                {/*<UniversalButton name={'All'} className={props.filter === 'all' ? 'activeFilter' : ''} onClick={() => onChangeFilter('all')}/>
                 <UniversalButton name={'Active'} className={props.filter === 'active' ? 'activeFilter' : ''} onClick={() => onChangeFilter('active')}/>
-                <UniversalButton name={'Completed'} className={props.filter === 'completed' ? 'activeFilter' : ''} onClick={() => onChangeFilter('completed')}/>
+                <UniversalButton name={'Completed'} className={props.filter === 'completed' ? 'activeFilter' : ''} onClick={() => onChangeFilter('completed')}/>*/}
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    style={styleButton}
+                    onClick={() => onChangeFilter('all')}>All
+                </Button>
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    style={styleButton}
+                    onClick={() => onChangeFilter('active')}>Active
+                </Button>
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    style={styleButton}
+                    onClick={() => onChangeFilter('completed')}>Completed
+                </Button>
             </div>
         </div>
     )

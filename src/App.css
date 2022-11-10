@@ -1,53 +1,28 @@
-.App {
-  display: grid;
-  grid-template-rows: 50px 1fr;
-  padding: 10px 50px;
-}
-
-.todolists {
-  margin-top: 30px;
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.App > div {
-  margin-right: 50px;
-}
-
-input:focus {
-  outline: none;
-}
-
-input::placeholder {
-  color: red;
-}
-
-.errorInput {
-  border: red 1px solid;
-}
-
-.activeFilter {
-  background-color: aquamarine;
-  outline: none;
-}
-
-.isDone {
-  opacity: 0.5;
-}
-
 h3 {
   display: inline;
 }
 
-ul {
+.task {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+}
+
+.taskDone {
+  opacity: 0.5;
+  display: flex;
+  justify-content: space-between;
+  text-decoration: line-through;
+  color: darkorchid;
+}
+
+.buttons {
+  display: flex;
   gap: 5px;
 }
 
-li {
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-}
+
+
+
+
+
+
