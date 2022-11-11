@@ -2,17 +2,17 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, TextField} from '@mui/material';
 
 type UniversalAddItemFormPropsType = {
-    callback: (newInputText: string) => void,
+    callback(newInputText:string):void,
 }
 
-export function UniversalAddItemForm(props: UniversalAddItemFormPropsType) {
+export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
 
-    const [newInputText, setNewInputText] = useState('');
-    const [error, setError] = useState('');
+    const [newInputText, setNewInputText] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
-    const errorMessage = 'Field is required';
+    const errorMessage:string = 'Field is required';
 
-    function onAddItem() {
+    function onAddItem():void {
         if (newInputText.trim() !== '') {
             props.callback(newInputText.trim());
             setNewInputText('');
@@ -21,7 +21,7 @@ export function UniversalAddItemForm(props: UniversalAddItemFormPropsType) {
         }
     }
 
-    function onChangeInput(e: ChangeEvent<HTMLInputElement>) {
+    function onChangeInput(e:ChangeEvent<HTMLInputElement>):void {
         if (e.currentTarget.value.trim() !== '') {
             setError('');
             setNewInputText(e.currentTarget.value);
@@ -30,7 +30,7 @@ export function UniversalAddItemForm(props: UniversalAddItemFormPropsType) {
         }
     }
 
-    function onKeyPress(e: KeyboardEvent<HTMLInputElement>) {
+    function onKeyPress(e:KeyboardEvent<HTMLInputElement>):void {
         if (e.key === 'Enter' && newInputText.trim() !== '') {
             onAddItem()
         } else {

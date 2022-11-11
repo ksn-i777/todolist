@@ -2,8 +2,6 @@ import React from 'react';
 import {AppBar, Box, Button, IconButton, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 
-
-
 export function AppBarComponent() {
 
     return (

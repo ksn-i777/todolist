@@ -2,21 +2,21 @@ import React, {ChangeEvent, useState} from 'react';
 import {TextField} from '@mui/material';
 
 type UniversalEditableSpanPropsType = {
-    title: string,
-    changeSpanTitle: (newSpanTitle: string) => void
+    title:string,
+    changeSpanTitle(newSpanTitle:string):void,
 }
 
-export function UniversalEditableSpan(props: UniversalEditableSpanPropsType) {
+export function UniversalEditableSpan(props:UniversalEditableSpanPropsType) {
 
     const [editMode, setEditMode] = useState<boolean>(false)
 
-    function onStartEditMode() {
+    function onStartEditMode():void {
         setEditMode(true)
     }
-    function onFinishEditMode() {
+    function onFinishEditMode():void {
         setEditMode(false)
     }
-    function onChangeSpanText(e: ChangeEvent<HTMLInputElement>) {
+    function onChangeSpanText(e:ChangeEvent<HTMLInputElement>):void {
         props.changeSpanTitle(e.currentTarget.value)
     }
 
