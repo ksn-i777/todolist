@@ -25,9 +25,20 @@ type ChangeTodolistFilterActionType = {
     todolistID: string
     newTodolistFilter: TodolistFilterValuesType
 }
-type ActionsType = AddTodolistActionType | RemoveTodolistActionType | ChangeTodolistTitleActionType | ChangeTodolistFilterActionType
+type ActionsType = AddTodolistActionType
+| RemoveTodolistActionType
+| ChangeTodolistTitleActionType
+| ChangeTodolistFilterActionType
 
-export function todolistsReducer(todolists:Array<TodolistType>, action:ActionsType):Array<TodolistType> {
+export const todolistID1 = v1();
+export const todolistID2 = v1();
+
+const initializationState:Array<TodolistType> = [
+    {todolistId: todolistID1, todolistTitle: 'What to learn', todolistFilter: 'all'},
+    {todolistId: todolistID2, todolistTitle: 'What to buy', todolistFilter: 'all'},
+]
+
+export function todolistsReducer(todolists:Array<TodolistType> = initializationState, action:ActionsType):Array<TodolistType> {
 
     let copyTodolists:Array<TodolistType> = []
 
@@ -46,7 +57,7 @@ export function todolistsReducer(todolists:Array<TodolistType>, action:ActionsTy
             copyTodolists = todolists.map(tl => tl.todolistId === action.todolistID ? {...tl, todolistFilter: action.newTodolistFilter} : tl)
             return copyTodolists
         default:
-            throw new Error("I don't understand this type")
+            return todolists
     }
 }
 

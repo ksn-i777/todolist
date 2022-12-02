@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
 import {TasksType, TaskType} from '../AppWithReducers';
-import {AddTodolistActionType, RemoveTodolistActionType, ADD_TODOLIST, REMOVE_TODOLIST} from './todolists-reducer';
+import {AddTodolistActionType, RemoveTodolistActionType, ADD_TODOLIST, REMOVE_TODOLIST, todolistID1, todolistID2} from './todolists-reducer';
 
 const ADD_TASK = 'ADD-TASK'
 const REMOVE_TASK = 'REMOVE-TASK'
@@ -31,13 +31,32 @@ type ChangeTaskStatusActionType = {
 }
 
 type ActionsType = AddTaskActionType
-    | RemoveTaskActionType
-    | ChangeTaskTitleActionType
-    | ChangeTaskStatusActionType
-    | AddTodolistActionType
-    | RemoveTodolistActionType
+| RemoveTaskActionType
+| ChangeTaskTitleActionType
+| ChangeTaskStatusActionType
+| AddTodolistActionType
+| RemoveTodolistActionType
 
-export function tasksReducer(objTasks:TasksType, action:ActionsType):TasksType {
+const initializationState:TasksType = {
+    [todolistID1]:
+        [
+            {taskId: v1(), taskTitle: 'HTML&CSS', taskIsDoneStatus: true},
+            {taskId: v1(), taskTitle: 'JS', taskIsDoneStatus: true},
+            {taskId: v1(), taskTitle: 'ReactJS', taskIsDoneStatus: false},
+            {taskId: v1(), taskTitle: 'Rest API', taskIsDoneStatus: false},
+            {taskId: v1(), taskTitle: 'GraphQL', taskIsDoneStatus: false},
+        ],
+    [todolistID2]:
+        [
+            {taskId: v1(), taskTitle: 'Book', taskIsDoneStatus: true},
+            {taskId: v1(), taskTitle: 'Milk', taskIsDoneStatus: false},
+            {taskId: v1(), taskTitle: 'Bred', taskIsDoneStatus: true},
+            {taskId: v1(), taskTitle: 'Pasta', taskIsDoneStatus: false},
+            {taskId: v1(), taskTitle: 'Pencil', taskIsDoneStatus: true},
+        ],
+}
+
+export function tasksReducer(objTasks:TasksType = initializationState, action:ActionsType):TasksType {
 
     let copyObjTasks:TasksType
 
@@ -64,7 +83,7 @@ export function tasksReducer(objTasks:TasksType, action:ActionsType):TasksType {
             delete copyObjTasks[action.todolistID]
             return copyObjTasks
         default:
-            throw new Error("I don't understand this type")
+            return objTasks
     }
 }
 
