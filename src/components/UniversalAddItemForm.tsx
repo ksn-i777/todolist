@@ -2,7 +2,8 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, TextField} from '@mui/material';
 
 type UniversalAddItemFormPropsType = {
-    callback(newInputText:string):void,
+    what:string
+    callback(newInputText:string):void
 }
 
 export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
@@ -64,7 +65,7 @@ export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
                 variant="outlined"
                 size="small"
                 style={inputStyle}
-                label={error ? errorMessage : 'Enter your task'}
+                label={error ? errorMessage : `Enter your ${props.what}`}
                 value={newInputText}
                 onChange={onChangeInput}
                 onKeyPress={onKeyPress}/>
