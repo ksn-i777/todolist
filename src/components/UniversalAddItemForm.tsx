@@ -6,7 +6,8 @@ type UniversalAddItemFormPropsType = {
     callback(newInputText:string):void
 }
 
-export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
+export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFormPropsType) {
+    console.log('addForm')
 
     const [newInputText, setNewInputText] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -24,7 +25,6 @@ export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
 
     function onChangeInput(e:ChangeEvent<HTMLInputElement>):void {
         if (e.currentTarget.value.trim() !== '') {
-            setError('');
             setNewInputText(e.currentTarget.value);
         } else {
             setNewInputText('')
@@ -32,9 +32,11 @@ export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
     }
 
     function onKeyPress(e:KeyboardEvent<HTMLInputElement>):void {
+        if (error && e.key !== 'Enter') {setError('')}
         if (e.key === 'Enter' && newInputText.trim() !== '') {
             onAddItem()
-        } else {
+        }
+        if (e.key === 'Enter' && newInputText.trim() === '') {
             setError(errorMessage)
         }
     }
@@ -73,4 +75,4 @@ export function UniversalAddItemForm(props:UniversalAddItemFormPropsType) {
             <Button style={buttonStyle} color='secondary' onClick={onAddItem}>+</Button>
         </div>
     )
-}
+})

@@ -46,14 +46,6 @@ const initializationState:TasksType = {
             {taskId: v1(), taskTitle: 'Rest API', taskIsDoneStatus: false},
             {taskId: v1(), taskTitle: 'GraphQL', taskIsDoneStatus: false},
         ],
-    [todolistID2]:
-        [
-            {taskId: v1(), taskTitle: 'Book', taskIsDoneStatus: true},
-            {taskId: v1(), taskTitle: 'Milk', taskIsDoneStatus: false},
-            {taskId: v1(), taskTitle: 'Bred', taskIsDoneStatus: true},
-            {taskId: v1(), taskTitle: 'Pasta', taskIsDoneStatus: false},
-            {taskId: v1(), taskTitle: 'Pencil', taskIsDoneStatus: true},
-        ],
 }
 
 export function tasksReducer(objTasks:TasksType = initializationState, action:ActionsType):TasksType {

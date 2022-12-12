@@ -6,7 +6,8 @@ type UniversalEditableSpanPropsType = {
     changeSpanTitle(newSpanTitle:string):void,
 }
 
-export function UniversalEditableSpan(props:UniversalEditableSpanPropsType) {
+export const UniversalEditableSpan = React.memo(function(props:UniversalEditableSpanPropsType) {
+    console.log('editableSpan')
 
     const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -47,4 +48,4 @@ export function UniversalEditableSpan(props:UniversalEditableSpanPropsType) {
                 onKeyDown={onKeyDownSpanTitle}
                 autoFocus/>
         : <span onDoubleClick={onOpenEditMode}>{props.spanTitle}</span>
-}
+})
