@@ -4,29 +4,19 @@ import { Todolist } from './components/Todolist'
 import { UniversalAddItemForm } from './components/UniversalAddItemForm'
 import { AppBarComponent } from './components/AppBarComponent'
 import { Container, Grid, Paper } from '@mui/material';
-import { addTodolistAC, removeTodolistAC, changeTodolistTitleAC, changeTodolistFilterAC } from './store/todolists-reducer'
-import { addTaskAC, removeTaskAC, changeTaskTitleAC, changeTaskStatusAC } from './store/tasks-reducer'
+import {
+    addTodolistAC,
+    removeTodolistAC,
+    changeTodolistTitleAC,
+    changeTodolistFilterAC,
+    TodolistType, TodolistFilterValuesType
+} from './store/todolists-reducer'
+import {addTaskAC, removeTaskAC, changeTaskTitleAC, changeTaskStatusAC, TasksType} from './store/tasks-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './store/store'
-
-export type TodolistFilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistType = {
-    todolistId: string,
-    todolistTitle: string,
-    todolistFilter: TodolistFilterValuesType,
-}
-
-export type TaskType = {
-    taskId: string,
-    taskTitle: string,
-    taskIsDoneStatus: boolean,
-}
-export type TasksType = {
-    [key: string]: Array<TaskType>,
-}
+import {TaskStatus} from './api/api';
 
 export function AppWithRedux() {
-    console.log('app')
 
     const dispatch = useDispatch()
     const todolists = useSelector<RootStateType, Array<TodolistType>>(state => state.todolists)
@@ -54,7 +44,7 @@ export function AppWithRedux() {
     const changeTaskTitle = useCallback(function(todolistID:string, taskID:string, newTaskTitle:string):void {
         dispatch(changeTaskTitleAC(todolistID, taskID, newTaskTitle))
     }, [dispatch])
-    const changeTaskStatus = useCallback(function (todolistID:string, taskID:string, taskStatus:boolean):void {
+    const changeTaskStatus = useCallback(function (todolistID:string, taskID:string, taskStatus:TaskStatus):void {
         dispatch(changeTaskStatusAC(todolistID, taskID, taskStatus));
     }, [dispatch])
 
@@ -75,14 +65,14 @@ export function AppWithRedux() {
                 <Grid style={{marginTop: '30px', justifyContent: 'flex-start', gap: '30px'}} container>
                     {todolists.map(tl => {
 
-                        let tasksForTodolist = tasks[tl.todolistId];
+                        let tasksForTodolist = tasks[tl.id];
 
                         return (
-                            <Paper key={tl.todolistId} style={{padding: '10px'}} elevation={3}>
+                            <Paper key={tl.id} style={{padding: '10px'}} elevation={3}>
                                 <Grid item>
                                     <Todolist
-                                        todolistId={tl.todolistId}
-                                        todolistTitle={tl.todolistTitle}
+                                        todolistId={tl.id}
+                                        todolistTitle={tl.title}
                                         todolistFilter={tl.todolistFilter}
                                         tasks={tasksForTodolist}
 

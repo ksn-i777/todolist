@@ -1,10 +1,16 @@
 import {v1} from 'uuid';
-import {TodolistFilterValuesType, TodolistType} from '../AppWithReducers';
+import {TodolistTypeFromResponse} from '../api/api';
 
 export const ADD_TODOLIST = 'ADD-TODOLIST'
 export const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
-const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
-const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
+export const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
+export const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
+
+export type TodolistFilterValuesType = 'all' | 'active' | 'completed';
+
+export type TodolistType = TodolistTypeFromResponse & {
+    todolistFilter: TodolistFilterValuesType,
+};
 
 export type AddTodolistActionType = {
     type: typeof ADD_TODOLIST
@@ -15,17 +21,17 @@ export type RemoveTodolistActionType = {
     type: typeof REMOVE_TODOLIST
     todolistID: string
 }
-type ChangeTodolistTitleActionType = {
+export type ChangeTodolistTitleActionType = {
     type: typeof CHANGE_TODOLIST_TITLE
     todolistID: string
     newTodolistTitle: string
 }
-type ChangeTodolistFilterActionType = {
+export type ChangeTodolistFilterActionType = {
     type: typeof CHANGE_TODOLIST_FILTER
     todolistID: string
     newTodolistFilter: TodolistFilterValuesType
 }
-type ActionsType = AddTodolistActionType
+type TodolistActionsType = AddTodolistActionType
 | RemoveTodolistActionType
 | ChangeTodolistTitleActionType
 | ChangeTodolistFilterActionType
@@ -34,26 +40,26 @@ export const todolistID1 = v1();
 export const todolistID2 = v1();
 
 const initializationState:Array<TodolistType> = [
-    {todolistId: todolistID1, todolistTitle: 'What to learn', todolistFilter: 'all'},
+    {id: todolistID1, title: 'What to learn', todolistFilter: 'all', addedDate: '', order: 0}
 ]
 
-export function todolistsReducer(todolists:Array<TodolistType> = initializationState, action:ActionsType):Array<TodolistType> {
+export function todolistsReducer(todolists:Array<TodolistType> = initializationState, action:TodolistActionsType):Array<TodolistType> {
 
     let copyTodolists:Array<TodolistType> = []
 
     switch (action.type) {
         case ADD_TODOLIST:
-            const newTodolist:TodolistType = {todolistId: action.todolistID, todolistTitle: action.titleOfNewTodolist, todolistFilter: 'all'}
+            const newTodolist:TodolistType = {id: action.todolistID, title: action.titleOfNewTodolist, todolistFilter: 'all', addedDate: '', order: 0}
             copyTodolists = [newTodolist, ...todolists]
             return copyTodolists
         case REMOVE_TODOLIST:
-            copyTodolists = todolists.filter(tl => tl.todolistId !== action.todolistID)
+            copyTodolists = todolists.filter(tl => tl.id !== action.todolistID)
             return copyTodolists
         case CHANGE_TODOLIST_TITLE:
-            copyTodolists = todolists.map(tl => tl.todolistId === action.todolistID ? {...tl, todolistTitle: action.newTodolistTitle} : tl)
+            copyTodolists = todolists.map(tl => tl.id === action.todolistID ? {...tl, title: action.newTodolistTitle} : tl)
             return copyTodolists
         case CHANGE_TODOLIST_FILTER:
-            copyTodolists = todolists.map(tl => tl.todolistId === action.todolistID ? {...tl, todolistFilter: action.newTodolistFilter} : tl)
+            copyTodolists = todolists.map(tl => tl.id === action.todolistID ? {...tl, todolistFilter: action.newTodolistFilter} : tl)
             return copyTodolists
         default:
             return todolists

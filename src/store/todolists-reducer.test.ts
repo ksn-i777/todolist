@@ -3,10 +3,9 @@ import {
     removeTodolistAC,
     addTodolistAC,
     changeTodolistTitleAC,
-    changeTodolistFilterAC,
+    changeTodolistFilterAC, TodolistType, TodolistFilterValuesType,
 } from './todolists-reducer'
 import { v1 } from 'uuid'
-import {TodolistFilterValuesType, TodolistType} from '../App';
 
 let todolistID1:string
 let todolistID2:string
@@ -16,8 +15,8 @@ beforeEach(() => {
     todolistID1 = v1();
     todolistID2 = v1();
     startTodolists = [
-        {todolistId: todolistID1, todolistTitle: 'What to learn', todolistFilter: 'all'},
-        {todolistId: todolistID2, todolistTitle: 'What to buy', todolistFilter: 'all'},
+        {id: todolistID1, title: 'What to learn', todolistFilter: 'all', addedDate: '', order: 0},
+        {id: todolistID2, title: 'What to buy', todolistFilter: 'all', addedDate: '', order: 0},
     ]
 })
 
@@ -26,7 +25,7 @@ test('correct todolist should be removed', () => {
     const endTodolists = todolistsReducer(startTodolists, removeTodolistAC(todolistID1))
 
     expect(endTodolists.length).toBe(1)
-    expect(endTodolists[0].todolistId).toBe(todolistID2)
+    expect(endTodolists[0].id).toBe(todolistID2)
 })
 
 test('correct todolist should be added', () => {
@@ -36,7 +35,7 @@ test('correct todolist should be added', () => {
     const endTodolists = todolistsReducer(startTodolists, addTodolistAC(titleOfNewTodolist))
 
     expect(endTodolists.length).toBe(3)
-    expect(endTodolists[0].todolistTitle).toBe(titleOfNewTodolist)
+    expect(endTodolists[0].title).toBe(titleOfNewTodolist)
     expect(endTodolists[0].todolistFilter).toBe('all')
 })
 
@@ -46,8 +45,8 @@ test('correct todolist should change its name', () => {
 
     const endTodolists = todolistsReducer(startTodolists, changeTodolistTitleAC(todolistID2, newTodolistTitle))
 
-    expect(endTodolists[0].todolistTitle).toBe('What to learn')
-    expect(endTodolists[1].todolistTitle).toBe(newTodolistTitle)
+    expect(endTodolists[0].title).toBe('What to learn')
+    expect(endTodolists[1].title).toBe(newTodolistTitle)
 })
 
 test('correct filter of todolist should be changed', () => {

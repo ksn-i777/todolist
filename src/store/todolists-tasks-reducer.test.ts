@@ -1,6 +1,5 @@
-import {TasksType, TodolistType} from '../App';
-import {tasksReducer} from './tasks-reducer';
-import {addTodolistAC, todolistsReducer} from './todolists-reducer';
+import {tasksReducer, TasksType} from './tasks-reducer';
+import {addTodolistAC, todolistsReducer, TodolistType} from './todolists-reducer';
 
 test('ids should be equals', () => {
     const startObjTasks:TasksType = {}
@@ -13,7 +12,7 @@ test('ids should be equals', () => {
 
     const keys = Object.keys(endObjTasks)
     const idFromTasks = keys[0]
-    const idFromTodolists = endTodolists[0].todolistId
+    const idFromTodolists = endTodolists[0].id
 
     expect(idFromTasks).toBe(action.todolistID)
     expect(idFromTodolists).toBe(action.todolistID)

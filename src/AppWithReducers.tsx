@@ -5,24 +5,16 @@ import { v1 } from 'uuid';
 import { UniversalAddItemForm } from './components/UniversalAddItemForm';
 import { AppBarComponent } from './components/AppBarComponent';
 import { Container, Grid, Paper } from '@mui/material';
-import { todolistsReducer, addTodolistAC, removeTodolistAC, changeTodolistTitleAC, changeTodolistFilterAC } from './store/todolists-reducer';
+import {
+    todolistsReducer,
+    addTodolistAC,
+    removeTodolistAC,
+    changeTodolistTitleAC,
+    changeTodolistFilterAC,
+    TodolistFilterValuesType
+} from './store/todolists-reducer';
 import { tasksReducer, addTaskAC, removeTaskAC, changeTaskTitleAC, changeTaskStatusAC } from './store/tasks-reducer';
-
-export type TodolistFilterValuesType = 'all' | 'active' | 'completed';
-export type TodolistType = {
-    todolistId: string,
-    todolistTitle: string,
-    todolistFilter: TodolistFilterValuesType,
-};
-
-export type TaskType = {
-    taskId: string,
-    taskTitle: string,
-    taskIsDoneStatus: boolean,
-};
-export type TasksType = {
-    [key: string]: Array<TaskType>,
-};
+import {TaskPriority, TaskStatus} from './api/api';
 
 export function AppWithReducers() {
 
@@ -30,38 +22,36 @@ export function AppWithReducers() {
     const todolistID2 = v1();
 
     const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
-        {todolistId: todolistID1, todolistTitle: 'What to learn', todolistFilter: 'all'},
-        {todolistId: todolistID2, todolistTitle: 'What to buy', todolistFilter: 'all'},
+        {id: todolistID1, title: 'What to learn', todolistFilter: 'all', addedDate: '', order: 0},
+        {id: todolistID2, title: 'What to buy', todolistFilter: 'all', addedDate: '', order: 0},
     ]);
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
         [todolistID1]:
             [
-                {taskId: v1(), taskTitle: 'HTML&CSS', taskIsDoneStatus: true},
-                {taskId: v1(), taskTitle: 'JS', taskIsDoneStatus: true},
-                {taskId: v1(), taskTitle: 'ReactJS', taskIsDoneStatus: false},
-                {taskId: v1(), taskTitle: 'Rest API', taskIsDoneStatus: false},
-                {taskId: v1(), taskTitle: 'GraphQL', taskIsDoneStatus: false},
+                {id: v1(), title: 'HTML&CSS', status: TaskStatus.Completed, completed: true, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'JS', status: TaskStatus.Completed, completed: true, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'ReactJS', status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'Rest API', status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'GraphQL', status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
             ],
         [todolistID2]:
             [
-                {taskId: v1(), taskTitle: 'Book', taskIsDoneStatus: true},
-                {taskId: v1(), taskTitle: 'Milk', taskIsDoneStatus: false},
-                {taskId: v1(), taskTitle: 'Bred', taskIsDoneStatus: true},
-                {taskId: v1(), taskTitle: 'Pasta', taskIsDoneStatus: false},
-                {taskId: v1(), taskTitle: 'Pencil', taskIsDoneStatus: true},
+                {id: v1(), title: 'Book', status: TaskStatus.Completed, completed: true, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'Milk', status: TaskStatus.New, completed: false, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'Bred', status: TaskStatus.Completed, completed: true, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'Pasta', status: TaskStatus.New, completed: false, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+                {id: v1(), title: 'Pencil', status: TaskStatus.Completed, completed: true, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
             ],
     });
 
     function addTodolist(titleOfNewTodolist:string):void {
-        const action = addTodolistAC(titleOfNewTodolist)
-        dispatchToTodolists(action)
-        dispatchToTasks(action)
+        dispatchToTodolists(addTodolistAC(titleOfNewTodolist))
+        dispatchToTasks(addTodolistAC(titleOfNewTodolist))
     }
     function removeTodolist(todolistID:string):void {
-        const action = removeTodolistAC(todolistID)
-        dispatchToTodolists(action);
-        dispatchToTasks(action);
+        dispatchToTodolists(removeTodolistAC(todolistID));
+        dispatchToTasks(removeTodolistAC(todolistID));
     }
     function changeTodolistTitle(todolistID:string, newTodolistTitle:string):void {
         dispatchToTodolists(changeTodolistTitleAC(todolistID, newTodolistTitle))
@@ -79,7 +69,7 @@ export function AppWithReducers() {
     function changeTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void {
         dispatchToTasks(changeTaskTitleAC(todolistID, taskID, newTaskTitle))
     }
-    function changeTaskStatus(todolistID:string, taskID:string, taskStatus:boolean):void {
+    function changeTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void {
         dispatchToTasks(changeTaskStatusAC(todolistID, taskID, taskStatus));
     }
 
@@ -100,20 +90,20 @@ export function AppWithReducers() {
                 <Grid style={{marginTop: '30px', justifyContent: 'flex-start', gap: '30px'}} container>
                     {todolists.map(tl => {
 
-                        let filteredTasksByFilter = tasks[tl.todolistId];
+                        let filteredTasksByFilter = tasks[tl.id];
                         if (tl.todolistFilter === 'active') {
-                            filteredTasksByFilter = tasks[tl.todolistId].filter(task => !task.taskIsDoneStatus);
+                            filteredTasksByFilter = tasks[tl.id].filter(task => task.status === TaskStatus.New);
                         }
                         if (tl.todolistFilter === 'completed') {
-                            filteredTasksByFilter = tasks[tl.todolistId].filter(task => task.taskIsDoneStatus);
+                            filteredTasksByFilter = tasks[tl.id].filter(task => task.status === TaskStatus.Completed);
                         }
 
                         return (
-                            <Paper key={tl.todolistId} style={{padding: '10px'}} elevation={3}>
+                            <Paper key={tl.id} style={{padding: '10px'}} elevation={3}>
                                 <Grid item>
                                     <Todolist
-                                        todolistId={tl.todolistId}
-                                        todolistTitle={tl.todolistTitle}
+                                        todolistId={tl.id}
+                                        todolistTitle={tl.title}
                                         todolistFilter={tl.todolistFilter}
                                         tasks={filteredTasksByFilter}
 

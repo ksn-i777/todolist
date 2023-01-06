@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {tasksAPI} from '../api/tasks-api'
+import {tasksAPI} from '../api/api'
 
 
 export default {
@@ -7,13 +7,13 @@ export default {
 }
 
 const todolistID = '4deef941-ee5d-432e-9952-286625398b24'
-const taskID = 'caa7042f-ff17-4129-b5d2-e627a912bd77'
-const taskTitle = 'TD3-TASK2'
+const taskID = '4f1f143d-e063-4b44-a77d-d14de2b7c246'
+const taskTitle = 'AAAAA'
 
 export const GetTasks = () => {
    const [state, setState] = useState<any>(null)
    useEffect(() => {
-        tasksAPI.getTasks(todolistID).then(res => {setState(res.data)})
+        tasksAPI.getTasks(todolistID).then(res => {setState(res)})
    }, [])
    return <div>{JSON.stringify(state)}</div>
 }

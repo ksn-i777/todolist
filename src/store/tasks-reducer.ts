@@ -1,11 +1,15 @@
 import {v1} from 'uuid';
-import {TasksType, TaskType} from '../AppWithReducers';
-import {AddTodolistActionType, RemoveTodolistActionType, ADD_TODOLIST, REMOVE_TODOLIST, todolistID1, todolistID2} from './todolists-reducer';
+import {AddTodolistActionType, RemoveTodolistActionType, ADD_TODOLIST, REMOVE_TODOLIST, todolistID1} from './todolists-reducer';
+import {TaskPriority, TaskStatus, TaskType} from '../api/api';
 
 const ADD_TASK = 'ADD-TASK'
 const REMOVE_TASK = 'REMOVE-TASK'
 const CHANGE_TASK_TITLE = 'CHANGE-TASK-TITLE'
 const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
+
+export type TasksType = {
+    [key: string]: Array<TaskType>,
+}
 
 type AddTaskActionType = {
     type: typeof ADD_TASK
@@ -27,10 +31,10 @@ type ChangeTaskStatusActionType = {
     type: typeof CHANGE_TASK_STATUS
     todolistID: string
     taskID: string
-    taskStatus: boolean
+    taskStatus: TaskStatus
 }
 
-type ActionsType = AddTaskActionType
+type TasksActionsType = AddTaskActionType
 | RemoveTaskActionType
 | ChangeTaskTitleActionType
 | ChangeTaskStatusActionType
@@ -40,32 +44,28 @@ type ActionsType = AddTaskActionType
 const initializationState:TasksType = {
     [todolistID1]:
         [
-            {taskId: v1(), taskTitle: 'HTML&CSS', taskIsDoneStatus: true},
-            {taskId: v1(), taskTitle: 'JS', taskIsDoneStatus: true},
-            {taskId: v1(), taskTitle: 'ReactJS', taskIsDoneStatus: false},
-            {taskId: v1(), taskTitle: 'Rest API', taskIsDoneStatus: false},
-            {taskId: v1(), taskTitle: 'GraphQL', taskIsDoneStatus: false},
+            {id: v1(), title: 'HTML&CSS', status: TaskStatus.Completed, completed: true, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: v1(), title: 'JS', status: TaskStatus.Completed, completed: true, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: v1(), title: 'ReactJS', status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: v1(), title: 'Rest API', status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: v1(), title: 'GraphQL', status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
         ],
 }
 
-export function tasksReducer(objTasks:TasksType = initializationState, action:ActionsType):TasksType {
+export function tasksReducer(objTasks:TasksType = initializationState, action:TasksActionsType):TasksType {
 
     let copyObjTasks:TasksType
 
     switch (action.type) {
         case ADD_TASK:
-            const newTask:TaskType = {taskId: v1(), taskTitle: action.titleOfNewTask, taskIsDoneStatus: false}
-            copyObjTasks = {...objTasks, [action.todolistID]: [newTask, ...objTasks[action.todolistID]]}
-            return copyObjTasks
+            const newTask:TaskType = {id: v1(), title: action.titleOfNewTask, status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''}
+            return {...objTasks, [action.todolistID]: [newTask, ...objTasks[action.todolistID]]}
         case REMOVE_TASK:
-            copyObjTasks = {...objTasks, [action.todolistID]: objTasks[action.todolistID].filter(t => t.taskId !== action.taskID)}
-            return copyObjTasks
+            return {...objTasks, [action.todolistID]: objTasks[action.todolistID].filter(t => t.id !== action.taskID)}
         case CHANGE_TASK_TITLE:
-            copyObjTasks = {...objTasks, [action.todolistID]: objTasks[action.todolistID].map(t => t.taskId === action.taskID  ? {...t, taskTitle: action.newTaskTitle} : t)}
-            return copyObjTasks
+            return {...objTasks, [action.todolistID]: objTasks[action.todolistID].map(t => t.id === action.taskID  ? {...t, title: action.newTaskTitle} : t)}
         case CHANGE_TASK_STATUS:
-            copyObjTasks = {...objTasks, [action.todolistID]: objTasks[action.todolistID].map(t => t.taskId === action.taskID ? {...t, taskIsDoneStatus: action.taskStatus} : t)}
-            return copyObjTasks
+            return {...objTasks, [action.todolistID]: objTasks[action.todolistID].map(t => t.id === action.taskID ? {...t, status: action.taskStatus} : t)}
         case ADD_TODOLIST:
             copyObjTasks = {...objTasks}
             copyObjTasks[action.todolistID] = []
@@ -88,6 +88,6 @@ export function removeTaskAC(todolistID:string, taskID:string):RemoveTaskActionT
 export function changeTaskTitleAC(todolistID:string, taskID:string, newTaskTitle:string):ChangeTaskTitleActionType {
     return {type: CHANGE_TASK_TITLE, todolistID, taskID, newTaskTitle}
 }
-export function changeTaskStatusAC(todolistID:string, taskID:string, taskStatus:boolean):ChangeTaskStatusActionType {
+export function changeTaskStatusAC(todolistID:string, taskID:string, taskStatus:TaskStatus):ChangeTaskStatusActionType {
     return {type: CHANGE_TASK_STATUS, todolistID, taskID, taskStatus}
 }
