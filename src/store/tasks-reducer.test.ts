@@ -1,5 +1,5 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType,} from './tasks-reducer'
-import {removeTodolistAC} from './todolists-reducer';
+import {createTaskAC, updateTaskStatusAC, updateTaskTitleAC, deleteTaskAC, tasksReducer, TasksType,} from './tasks-reducer'
+import {deleteTodolistAC} from './todolists-reducer';
 import {TaskPriority, TaskStatus} from '../api/api';
 
 let startObjTasks:TasksType
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 test('correct task should be deleted from correct array', () => {
 
-    const action = removeTaskAC('todolistID2', '2')
+    const action = deleteTaskAC('todolistID2', '2')
 
     const endObjTasks = tasksReducer(startObjTasks, action)
 
@@ -40,7 +40,7 @@ test('correct task should be deleted from correct array', () => {
 
 test('correct task should be added to correct array', () => {
 
-    const action = addTaskAC('todolistID2', 'juce')
+    const action = createTaskAC('todolistID2', 'juce')
 
     const endObjTasks = tasksReducer(startObjTasks, action)
 
@@ -53,7 +53,7 @@ test('correct task should be added to correct array', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = changeTaskStatusAC('todolistID2', '2', TaskStatus.New)
+    const action = updateTaskStatusAC('todolistID2', '2', TaskStatus.New)
 
     const endObjTasks = tasksReducer(startObjTasks, action)
 
@@ -63,7 +63,7 @@ test('status of specified task should be changed', () => {
 
 test('title of specified task should be changed', () => {
 
-    const action = changeTaskTitleAC('todolistID2', '2', 'beer')
+    const action = updateTaskTitleAC('todolistID2', '2', 'beer')
 
     const endObjTasks = tasksReducer(startObjTasks, action)
 
@@ -73,7 +73,7 @@ test('title of specified task should be changed', () => {
 
 test('property with todolistId should be deleted', () => {
 
-    const action = removeTodolistAC('todolistID2')
+    const action = deleteTodolistAC('todolistID2')
 
     const endObjTasks = tasksReducer(startObjTasks, action)
 

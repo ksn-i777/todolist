@@ -99,7 +99,7 @@ type GetTasksResponseType = {
     error: string | null
 }
 
-export const api = {
+export const todolistsAPI = {
     getTodolists() {
         return commonInstance.get<Array<TodolistTypeFromResponse>>('')
     },

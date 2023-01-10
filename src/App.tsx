@@ -104,14 +104,14 @@ export function App() {
                                         todolistFilter={tl.todolistFilter}
                                         tasks={filteredTasksByFilter}
 
-                                        removeTodolist={removeTodolist}
-                                        changeTodolistTitle={changeTodolistTitle}
-                                        changeTodolistFilter={changeTodolistFilter}
+                                        deleteTodolist={removeTodolist}
+                                        updateTodolistTitle={changeTodolistTitle}
+                                        updateTodolistFilter={changeTodolistFilter}
 
-                                        addTask={addTask}
-                                        removeTask={removeTask}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTaskStatus={changeTaskStatus}
+                                        createTask={addTask}
+                                        deleteTask={removeTask}
+                                        updateTaskTitle={changeTaskTitle}
+                                        updateTaskStatus={changeTaskStatus}
                                     />
                                 </Grid>
                             </Paper>

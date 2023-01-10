@@ -14,32 +14,32 @@ type TodolistPropsType = {
     todolistFilter:TodolistFilterValuesType,
     tasks:Array<TaskType>,
 
-    removeTodolist(todolistID:string):void,
-    changeTodolistTitle(todolistID:string, newTodolistTitle:string):void,
-    changeTodolistFilter(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void,
+    deleteTodolist(todolistID:string):void,
+    updateTodolistTitle(todolistID:string, newTodolistTitle:string):void,
+    updateTodolistFilter(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void,
 
-    addTask(todolistID:string, titleOfNewTask:string):void,
-    removeTask(todolistID:string, taskID:string):void,
-    changeTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void,
-    changeTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void,
+    createTask(todolistID:string, titleOfNewTask:string):void,
+    deleteTask(todolistID:string, taskID:string):void,
+    updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void,
+    updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void,
 };
 
 export const Todolist = React.memo(function(props:TodolistPropsType) {
     console.log('todolist')
 
     const onRemoveTodolist = useCallback(function():void {
-        props.removeTodolist(props.todolistId);
-    }, [props.removeTodolist, props.todolistId])
+        props.deleteTodolist(props.todolistId);
+    }, [props.deleteTodolist, props.todolistId])
     const onChangeTodolistTitle = useCallback(function(newTodolistTitle:string):void {
-        props.changeTodolistTitle(props.todolistId, newTodolistTitle)
-    }, [props.changeTodolistTitle, props.todolistId])
+        props.updateTodolistTitle(props.todolistId, newTodolistTitle)
+    }, [props.updateTodolistTitle, props.todolistId])
     const onChangeTodolistFilter = useCallback(function(newTodolistFilter:TodolistFilterValuesType):void {
-        props.changeTodolistFilter(props.todolistId, newTodolistFilter);
-    }, [props.changeTodolistFilter, props.todolistId])
+        props.updateTodolistFilter(props.todolistId, newTodolistFilter);
+    }, [props.updateTodolistFilter, props.todolistId])
 
     const onAddTask = useCallback(function(titleOfNewTask:string):void {
-        props.addTask(props.todolistId, titleOfNewTask)
-    }, [props.addTask, props.todolistId])
+        props.createTask(props.todolistId, titleOfNewTask)
+    }, [props.createTask, props.todolistId])
 
     let filteredTasksByFilter = props.tasks
 
@@ -70,9 +70,9 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
                         key={task.id}
                         todolistID={props.todolistId}
                         task={task}
-                        removeTask={props.removeTask}
-                        changeTaskTitle={props.changeTaskTitle}
-                        changeTaskStatus={props.changeTaskStatus}
+                        removeTask={props.deleteTask}
+                        changeTaskTitle={props.updateTaskTitle}
+                        changeTaskStatus={props.updateTaskStatus}
                     />
                 )}
             </div>

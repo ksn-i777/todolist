@@ -7,13 +7,13 @@ import { AppBarComponent } from './components/AppBarComponent';
 import { Container, Grid, Paper } from '@mui/material';
 import {
     todolistsReducer,
-    addTodolistAC,
-    removeTodolistAC,
-    changeTodolistTitleAC,
-    changeTodolistFilterAC,
+    createTodolistAC,
+    deleteTodolistAC,
+    updateTodolistTitleAC,
+    updateTodolistFilterAC,
     TodolistFilterValuesType
 } from './store/todolists-reducer';
-import { tasksReducer, addTaskAC, removeTaskAC, changeTaskTitleAC, changeTaskStatusAC } from './store/tasks-reducer';
+import { tasksReducer, createTaskAC, deleteTaskAC, updateTaskTitleAC, updateTaskStatusAC } from './store/tasks-reducer';
 import {TaskPriority, TaskStatus} from './api/api';
 
 export function AppWithReducers() {
@@ -46,31 +46,31 @@ export function AppWithReducers() {
     });
 
     function addTodolist(titleOfNewTodolist:string):void {
-        dispatchToTodolists(addTodolistAC(titleOfNewTodolist))
-        dispatchToTasks(addTodolistAC(titleOfNewTodolist))
+        dispatchToTodolists(createTodolistAC(titleOfNewTodolist))
+        dispatchToTasks(createTodolistAC(titleOfNewTodolist))
     }
     function removeTodolist(todolistID:string):void {
-        dispatchToTodolists(removeTodolistAC(todolistID));
-        dispatchToTasks(removeTodolistAC(todolistID));
+        dispatchToTodolists(deleteTodolistAC(todolistID));
+        dispatchToTasks(deleteTodolistAC(todolistID));
     }
     function changeTodolistTitle(todolistID:string, newTodolistTitle:string):void {
-        dispatchToTodolists(changeTodolistTitleAC(todolistID, newTodolistTitle))
+        dispatchToTodolists(updateTodolistTitleAC(todolistID, newTodolistTitle))
     }
     function changeTodolistFilter(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void {
-        dispatchToTodolists(changeTodolistFilterAC(todolistID, newTodolistFilter));
+        dispatchToTodolists(updateTodolistFilterAC(todolistID, newTodolistFilter));
     }
 
     function addTask(todolistID:string, titleOfNewTask:string):void {
-        dispatchToTasks(addTaskAC(todolistID, titleOfNewTask));
+        dispatchToTasks(createTaskAC(todolistID, titleOfNewTask));
     }
     function removeTask(todolistID:string, taskID:string):void {
-        dispatchToTasks(removeTaskAC(todolistID, taskID));
+        dispatchToTasks(deleteTaskAC(todolistID, taskID));
     }
     function changeTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void {
-        dispatchToTasks(changeTaskTitleAC(todolistID, taskID, newTaskTitle))
+        dispatchToTasks(updateTaskTitleAC(todolistID, taskID, newTaskTitle))
     }
     function changeTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void {
-        dispatchToTasks(changeTaskStatusAC(todolistID, taskID, taskStatus));
+        dispatchToTasks(updateTaskStatusAC(todolistID, taskID, taskStatus));
     }
 
     return (
@@ -107,14 +107,14 @@ export function AppWithReducers() {
                                         todolistFilter={tl.todolistFilter}
                                         tasks={filteredTasksByFilter}
 
-                                        removeTodolist={removeTodolist}
-                                        changeTodolistTitle={changeTodolistTitle}
-                                        changeTodolistFilter={changeTodolistFilter}
+                                        deleteTodolist={removeTodolist}
+                                        updateTodolistTitle={changeTodolistTitle}
+                                        updateTodolistFilter={changeTodolistFilter}
 
-                                        addTask={addTask}
-                                        removeTask={removeTask}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTaskStatus={changeTaskStatus}
+                                        createTask={addTask}
+                                        deleteTask={removeTask}
+                                        updateTaskTitle={changeTaskTitle}
+                                        updateTaskStatus={changeTaskStatus}
                                     />
                                 </Grid>
                             </Paper>

@@ -1,45 +1,54 @@
 import {v1} from 'uuid';
-import {AddTodolistActionType, RemoveTodolistActionType, ADD_TODOLIST, REMOVE_TODOLIST, todolistID1} from './todolists-reducer';
+import {
+    GetTodolistsActionType,
+    CreateTodolistActionType,
+    DeleteTodolistActionType,
+    GET_TODOLISTS,
+    CREATE_TODOLIST,
+    DELETE_TODOLIST,
+    todolistID1,
+} from './todolists-reducer';
 import {TaskPriority, TaskStatus, TaskType} from '../api/api';
 
-const ADD_TASK = 'ADD-TASK'
-const REMOVE_TASK = 'REMOVE-TASK'
-const CHANGE_TASK_TITLE = 'CHANGE-TASK-TITLE'
-const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
+export const CREATE_TASK = 'CREATE-TASK'
+export const DELETE_TASK = 'DELETE-TASK'
+export const UPDATE_TASK_TITLE = 'UPDATE-TASK-TITLE'
+export const UPDATE_TASK_STATUS = 'UPDATE-TASK-STATUS'
 
 export type TasksType = {
     [key: string]: Array<TaskType>,
 }
 
-type AddTaskActionType = {
-    type: typeof ADD_TASK
+type CreateTaskActionType = {
+    type: typeof CREATE_TASK
     todolistID: string
     titleOfNewTask: string
 }
-type RemoveTaskActionType = {
-    type: typeof REMOVE_TASK
+type DeleteTaskActionType = {
+    type: typeof DELETE_TASK
     todolistID: string
     taskID: string
 }
-type ChangeTaskTitleActionType = {
-    type: typeof CHANGE_TASK_TITLE
+type UpdateTaskTitleActionType = {
+    type: typeof UPDATE_TASK_TITLE
     todolistID: string
     taskID: string
     newTaskTitle: string
 }
-type ChangeTaskStatusActionType = {
-    type: typeof CHANGE_TASK_STATUS
+type UpdateTaskStatusActionType = {
+    type: typeof UPDATE_TASK_STATUS
     todolistID: string
     taskID: string
     taskStatus: TaskStatus
 }
 
-type TasksActionsType = AddTaskActionType
-| RemoveTaskActionType
-| ChangeTaskTitleActionType
-| ChangeTaskStatusActionType
-| AddTodolistActionType
-| RemoveTodolistActionType
+type TasksActionsType = CreateTaskActionType
+| DeleteTaskActionType
+| UpdateTaskTitleActionType
+| UpdateTaskStatusActionType
+| GetTodolistsActionType
+| CreateTodolistActionType
+| DeleteTodolistActionType
 
 const initializationState:TasksType = {
     [todolistID1]:
@@ -57,20 +66,26 @@ export function tasksReducer(objTasks:TasksType = initializationState, action:Ta
     let copyObjTasks:TasksType
 
     switch (action.type) {
-        case ADD_TASK:
+        case CREATE_TASK:
             const newTask:TaskType = {id: v1(), title: action.titleOfNewTask, status: TaskStatus.New, completed: false, todoListId: todolistID1, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''}
             return {...objTasks, [action.todolistID]: [newTask, ...objTasks[action.todolistID]]}
-        case REMOVE_TASK:
+        case DELETE_TASK:
             return {...objTasks, [action.todolistID]: objTasks[action.todolistID].filter(t => t.id !== action.taskID)}
-        case CHANGE_TASK_TITLE:
+        case UPDATE_TASK_TITLE:
             return {...objTasks, [action.todolistID]: objTasks[action.todolistID].map(t => t.id === action.taskID  ? {...t, title: action.newTaskTitle} : t)}
-        case CHANGE_TASK_STATUS:
+        case UPDATE_TASK_STATUS:
             return {...objTasks, [action.todolistID]: objTasks[action.todolistID].map(t => t.id === action.taskID ? {...t, status: action.taskStatus} : t)}
-        case ADD_TODOLIST:
+        case GET_TODOLISTS:
+            copyObjTasks = {...objTasks}
+            action.todolists.forEach(tl => {
+                copyObjTasks[tl.id] = []
+            })
+            return copyObjTasks
+        case CREATE_TODOLIST:
             copyObjTasks = {...objTasks}
             copyObjTasks[action.todolistID] = []
             return copyObjTasks
-        case REMOVE_TODOLIST:
+        case DELETE_TODOLIST:
             copyObjTasks = {...objTasks}
             delete copyObjTasks[action.todolistID]
             return copyObjTasks
@@ -79,15 +94,15 @@ export function tasksReducer(objTasks:TasksType = initializationState, action:Ta
     }
 }
 
-export function addTaskAC(todolistID:string, titleOfNewTask:string):AddTaskActionType {
-    return {type: ADD_TASK, todolistID, titleOfNewTask}
+export function createTaskAC(todolistID:string, titleOfNewTask:string):CreateTaskActionType {
+    return {type: CREATE_TASK, todolistID, titleOfNewTask}
 }
-export function removeTaskAC(todolistID:string, taskID:string):RemoveTaskActionType {
-    return {type: REMOVE_TASK, todolistID, taskID}
+export function deleteTaskAC(todolistID:string, taskID:string):DeleteTaskActionType {
+    return {type: DELETE_TASK, todolistID, taskID}
 }
-export function changeTaskTitleAC(todolistID:string, taskID:string, newTaskTitle:string):ChangeTaskTitleActionType {
-    return {type: CHANGE_TASK_TITLE, todolistID, taskID, newTaskTitle}
+export function updateTaskTitleAC(todolistID:string, taskID:string, newTaskTitle:string):UpdateTaskTitleActionType {
+    return {type: UPDATE_TASK_TITLE, todolistID, taskID, newTaskTitle}
 }
-export function changeTaskStatusAC(todolistID:string, taskID:string, taskStatus:TaskStatus):ChangeTaskStatusActionType {
-    return {type: CHANGE_TASK_STATUS, todolistID, taskID, taskStatus}
+export function updateTaskStatusAC(todolistID:string, taskID:string, taskStatus:TaskStatus):UpdateTaskStatusActionType {
+    return {type: UPDATE_TASK_STATUS, todolistID, taskID, taskStatus}
 }
