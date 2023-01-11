@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
 import {todolistsAPI, TodolistTypeFromResponse} from '../api/api';
-import {Dispatch} from 'redux';
+import { AppDispatch } from './store';
 
 export const GET_TODOLISTS = 'GET-TODOLISTS'
 export const CREATE_TODOLIST = 'CREATE-TODOLIST'
@@ -83,8 +83,12 @@ export function updateTodolistFilterAC(todolistID:string, newTodolistFilter:Todo
     return {type: UPDATE_TODOLIST_FILTER, todolistID, newTodolistFilter}
 }
 
-export const getTodolistsTC = () => (dispatch: Dispatch) => {
+export const getTodolistsTC = () => (dispatch: AppDispatch) => {
     todolistsAPI.getTodolists().then((res) => {
         dispatch(getTodolistsAC(res.data))
+    })
+}
+export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDispatch) => {
+    todolistsAPI.createTodolist(titleOfNewTodolist).then(res => {
     })
 }

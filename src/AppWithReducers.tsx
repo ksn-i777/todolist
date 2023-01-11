@@ -61,7 +61,8 @@ export function AppWithReducers() {
     }
 
     function addTask(todolistID:string, titleOfNewTask:string):void {
-        dispatchToTasks(createTaskAC(todolistID, titleOfNewTask));
+        const task = {id: v1(), title: titleOfNewTask, status: TaskStatus.New, completed: false, todoListId: todolistID, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''}
+        dispatchToTasks(createTaskAC(todolistID, task));
     }
     function removeTask(todolistID:string, taskID:string):void {
         dispatchToTasks(deleteTaskAC(todolistID, taskID));

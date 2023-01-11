@@ -125,16 +125,7 @@ export const tasksAPI = {
     deleteTask(todolistID: string, taskID: string) {
         return commonInstance.delete<ResponseType>(todolistID + '/tasks/' + taskID)
     },
-    updateTaskTitle(todolistID: string, taskID: string, title: string) {
-        const payloud = {
-            title,
-            description: null,
-            completed: false,
-            status: 0,
-            priority: 1,
-            startDate: null,
-            deadline: null,
-        }
-        return commonInstance.put<ResponseType<{item: TaskType}>>(todolistID + '/tasks/' + taskID, payloud)
+    updateTask(todolistID: string, taskID: string, task: TaskType) {
+        return commonInstance.put<ResponseType<{item: TaskType}>>(todolistID + '/tasks/' + taskID, task)
     },
 }

@@ -9,12 +9,14 @@ import {
     deleteTodolistAC,
     updateTodolistTitleAC,
     updateTodolistFilterAC,
-    TodolistType, TodolistFilterValuesType, getTodolistsTC, TodolistActionsType
+    TodolistType,
+    TodolistFilterValuesType,
+    getTodolistsTC,
 } from './store/todolists-reducer'
-import {createTaskAC, deleteTaskAC, updateTaskTitleAC, updateTaskStatusAC, TasksType} from './store/tasks-reducer'
+import { createTaskTC, deleteTaskTC, updateTaskTitleTC, updateTaskStatusTC, TasksType } from './store/tasks-reducer'
 import { useDispatch, useSelector } from 'react-redux'
-import {AppDispatch, RootStateType} from './store/store'
-import {TaskStatus, todolistsAPI} from './api/api';
+import { AppDispatch, RootStateType } from './store/store'
+import { TaskStatus } from './api/api';
 
 export function AppWithRedux() {
 
@@ -40,16 +42,16 @@ export function AppWithRedux() {
     }, [dispatch])
 
     const createTask = useCallback(function(todolistID:string, titleOfNewTask:string):void {
-        dispatch(createTaskAC(todolistID, titleOfNewTask));
+        dispatch(createTaskTC(todolistID, titleOfNewTask));
     }, [dispatch])
     const deleteTask = useCallback(function(todolistID:string, taskID:string):void {
-        dispatch(deleteTaskAC(todolistID, taskID));
+        dispatch(deleteTaskTC(todolistID, taskID))
     }, [dispatch])
     const updateTaskTitle = useCallback(function(todolistID:string, taskID:string, newTaskTitle:string):void {
-        dispatch(updateTaskTitleAC(todolistID, taskID, newTaskTitle))
+        dispatch(updateTaskTitleTC(todolistID, taskID, newTaskTitle))
     }, [dispatch])
     const updateTaskStatus = useCallback(function (todolistID:string, taskID:string, taskStatus:TaskStatus):void {
-        dispatch(updateTaskStatusAC(todolistID, taskID, taskStatus));
+        dispatch(updateTaskStatusTC(todolistID, taskID, taskStatus));
     }, [dispatch])
 
     return (

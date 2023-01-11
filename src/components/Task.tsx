@@ -8,23 +8,23 @@ import {TaskStatus, TaskType} from '../api/api';
 type TaskPropsType = {
     task: TaskType
     todolistID: string
-    removeTask(todolistID:string, taskID:string):void
-    changeTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void
-    changeTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void
+    deleteTask(todolistID:string, taskID:string):void
+    updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void
+    updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void
 }
 
 export const Task = React.memo(function(props:TaskPropsType) {
     console.log('task')
 
-    const onRemoveTask = useCallback(function(taskID:string):void {
-        props.removeTask(props.todolistID, taskID);
-    }, [props.removeTask, props.todolistID])
-    const onChangeTaskTitle = useCallback(function(taskID:string, newTaskTitle:string):void {
-        props.changeTaskTitle(props.todolistID, taskID, newTaskTitle)
-    }, [props.changeTaskTitle, props.todolistID])
-    const onChangeTaskStatus = useCallback(function(taskID:string, e:ChangeEvent<HTMLInputElement>):void {
-        props.changeTaskStatus(props.todolistID, taskID, e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New);
-    }, [props.changeTaskStatus, props.todolistID])
+    const onDeleteTask = useCallback(function(taskID:string):void {
+        props.deleteTask(props.todolistID, taskID);
+    }, [props.deleteTask, props.todolistID])
+    const onUpdateTaskTitle = useCallback(function(taskID:string, newTaskTitle:string):void {
+        props.updateTaskTitle(props.todolistID, taskID, newTaskTitle)
+    }, [props.updateTaskTitle, props.todolistID])
+    const onUpdateTaskStatus = useCallback(function(taskID:string, e:ChangeEvent<HTMLInputElement>):void {
+        props.updateTaskStatus(props.todolistID, taskID, e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New);
+    }, [props.updateTaskStatus, props.todolistID])
 
     const styleTask = {
         display: 'flex',
@@ -41,10 +41,10 @@ export const Task = React.memo(function(props:TaskPropsType) {
     return (
         <div style={props.task.status === TaskStatus.Completed ? styleDoneTask : styleTask}>
             <div>
-                <Checkbox color="secondary" checked={props.task.status === TaskStatus.Completed} onChange={(e) => onChangeTaskStatus(props.task.id, e)}/>
-                <UniversalEditableSpan spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onChangeTaskTitle(props.task.id, newSpanTitle)}}/>
+                <Checkbox color="secondary" checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)}/>
+                <UniversalEditableSpan spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onUpdateTaskTitle(props.task.id, newSpanTitle)}}/>
             </div>
-            <IconButton aria-label="delete" size="small" color="secondary" onClick={() => onRemoveTask(props.task.id)}><Delete fontSize="small"/></IconButton>
+            <IconButton aria-label="delete" size="small" color="secondary" onClick={() => onDeleteTask(props.task.id)}><Delete fontSize="small"/></IconButton>
         </div>
     )
 })
