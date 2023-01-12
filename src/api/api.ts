@@ -106,26 +106,25 @@ export const todolistsAPI = {
     createTodolist(title: string) {
         return commonInstance.post<ResponseType<{item: TodolistTypeFromResponse}>>('', {title})
     },
-    deleteTodolist(todolistID: string) {
+    deleteTodolist(todolistID:string) {
         return commonInstance.delete<ResponseType>(todolistID)
     },
-    updateTodolistTitle(todolistID: string, newTitle: string) {
+    updateTodolistTitle(todolistID:string, newTitle:string) {
         return commonInstance.put<ResponseType>(todolistID, {title: newTitle})
     },
 }
 
 export const tasksAPI = {
-    getTasks(todolistID: string) {
+    getTasks(todolistID:string) {
         return commonInstance.get<GetTasksResponseType>(todolistID+'/tasks')
-            .then(res => res.data.items)
     },
-    createTask(todolistID: string, title: string) {
-        return commonInstance.post<ResponseType<{item: TaskType}>>(todolistID + '/tasks', {title})
+    createTask(todolistID:string, title: string) {
+        return commonInstance.post<ResponseType<{item:TaskType}>>(todolistID + '/tasks', {title})
     },
-    deleteTask(todolistID: string, taskID: string) {
+    deleteTask(todolistID:string, taskID:string) {
         return commonInstance.delete<ResponseType>(todolistID + '/tasks/' + taskID)
     },
-    updateTask(todolistID: string, taskID: string, task: TaskType) {
-        return commonInstance.put<ResponseType<{item: TaskType}>>(todolistID + '/tasks/' + taskID, task)
+    updateTask(todolistID:string, taskID:string, task:TaskType) {
+        return commonInstance.put<ResponseType<{item:TaskType}>>(todolistID + '/tasks/' + taskID, task)
     },
 }

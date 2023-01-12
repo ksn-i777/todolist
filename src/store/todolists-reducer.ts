@@ -1,5 +1,5 @@
-import {v1} from 'uuid';
-import {todolistsAPI, TodolistTypeFromResponse} from '../api/api';
+import { v1 } from 'uuid';
+import { todolistsAPI, TodolistTypeFromResponse } from '../api/api';
 import { AppDispatch } from './store';
 
 export const GET_TODOLISTS = 'GET-TODOLISTS'
@@ -21,8 +21,7 @@ export type GetTodolistsActionType = {
 
 export type CreateTodolistActionType = {
     type: typeof CREATE_TODOLIST
-    todolistID: string
-    titleOfNewTodolist: string
+    todolist: TodolistTypeFromResponse
 }
 export type DeleteTodolistActionType = {
     type: typeof DELETE_TODOLIST
@@ -54,7 +53,7 @@ export function todolistsReducer(todolists:Array<TodolistType> = [], action:Todo
         case GET_TODOLISTS:
             return action.todolists.map(tl => ({...tl, todolistFilter: 'all'}))
         case CREATE_TODOLIST:
-            const newTodolist:TodolistType = {id: action.todolistID, title: action.titleOfNewTodolist, todolistFilter: 'all', addedDate: '', order: 0}
+            const newTodolist:TodolistType = {...action.todolist, todolistFilter: 'all'}
             return [newTodolist, ...todolists]
         case DELETE_TODOLIST:
             return todolists.filter(tl => tl.id !== action.todolistID)
@@ -70,8 +69,8 @@ export function todolistsReducer(todolists:Array<TodolistType> = [], action:Todo
 export function getTodolistsAC(todolists:Array<TodolistTypeFromResponse>):GetTodolistsActionType {
     return {type: GET_TODOLISTS, todolists}
 }
-export function createTodolistAC(titleOfNewTodolist:string):CreateTodolistActionType {
-    return {type: CREATE_TODOLIST, todolistID: v1(), titleOfNewTodolist}
+export function createTodolistAC(todolist:TodolistTypeFromResponse):CreateTodolistActionType {
+    return {type: CREATE_TODOLIST, todolist}
 }
 export function deleteTodolistAC(todolistID: string):DeleteTodolistActionType {
     return {type: DELETE_TODOLIST, todolistID}
@@ -90,5 +89,19 @@ export const getTodolistsTC = () => (dispatch: AppDispatch) => {
 }
 export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDispatch) => {
     todolistsAPI.createTodolist(titleOfNewTodolist).then(res => {
+        dispatch(createTodolistAC(res.data.data.item))
     })
+}
+export const deleteTodolistTC = (todolistID:string) => (dispatch: AppDispatch) => {
+    todolistsAPI.deleteTodolist(todolistID).then(res => {
+        dispatch(deleteTodolistAC(todolistID))
+    })
+}
+export const updateTodolistTitleTC = (todolistID:string, newTitle:string) => (dispatch: AppDispatch) => {
+    todolistsAPI.updateTodolistTitle(todolistID, newTitle).then(res => {
+        dispatch(updateTodolistTitleAC(todolistID, newTitle))
+    })
+}
+export const updateTodolistFilterTC = (todolistID:string, newTodolistFilter:TodolistFilterValuesType) => (dispatch: AppDispatch) => {
+    dispatch(updateTodolistFilterAC(todolistID, newTodolistFilter))
 }

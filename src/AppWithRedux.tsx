@@ -5,13 +5,13 @@ import { UniversalAddItemForm } from './components/UniversalAddItemForm'
 import { AppBarComponent } from './components/AppBarComponent'
 import { Container, Grid, Paper } from '@mui/material';
 import {
-    createTodolistAC,
-    deleteTodolistAC,
-    updateTodolistTitleAC,
-    updateTodolistFilterAC,
+    getTodolistsTC,
+    createTodolistTC,
+    deleteTodolistTC,
+    updateTodolistTitleTC,
+    updateTodolistFilterTC,
     TodolistType,
     TodolistFilterValuesType,
-    getTodolistsTC,
 } from './store/todolists-reducer'
 import { createTaskTC, deleteTaskTC, updateTaskTitleTC, updateTaskStatusTC, TasksType } from './store/tasks-reducer'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,16 +29,16 @@ export function AppWithRedux() {
     }, [])
 
     const createTodolist = useCallback(function(titleOfNewTodolist:string):void {
-        dispatch(createTodolistAC(titleOfNewTodolist))
+        dispatch(createTodolistTC(titleOfNewTodolist))
     }, [dispatch])
     const deleteTodolist = useCallback(function(todolistID:string):void {
-        dispatch(deleteTodolistAC(todolistID));
+        dispatch(deleteTodolistTC(todolistID));
     }, [dispatch])
     const updateTodolistTitle = useCallback(function(todolistID:string, newTodolistTitle:string):void {
-        dispatch(updateTodolistTitleAC(todolistID, newTodolistTitle))
+        dispatch(updateTodolistTitleTC(todolistID, newTodolistTitle))
     }, [dispatch])
     const updateTodolistFilter = useCallback(function(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void {
-        dispatch(updateTodolistFilterAC(todolistID, newTodolistFilter));
+        dispatch(updateTodolistFilterTC(todolistID, newTodolistFilter));
     }, [dispatch])
 
     const createTask = useCallback(function(todolistID:string, titleOfNewTask:string):void {

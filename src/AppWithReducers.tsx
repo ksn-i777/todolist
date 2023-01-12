@@ -46,8 +46,11 @@ export function AppWithReducers() {
     });
 
     function addTodolist(titleOfNewTodolist:string):void {
-        dispatchToTodolists(createTodolistAC(titleOfNewTodolist))
-        dispatchToTasks(createTodolistAC(titleOfNewTodolist))
+        const todolist = {
+            id: v1(), title: titleOfNewTodolist, status: TaskStatus.Completed, completed: true, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+        }
+        dispatchToTodolists(createTodolistAC(todolist))
+        dispatchToTasks(createTodolistAC(todolist))
     }
     function removeTodolist(todolistID:string):void {
         dispatchToTodolists(deleteTodolistAC(todolistID));

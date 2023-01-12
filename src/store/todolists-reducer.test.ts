@@ -30,12 +30,12 @@ test('correct todolist should be removed', () => {
 
 test('correct todolist should be added', () => {
 
-    const titleOfNewTodolist = 'New Todolist'
+    const newTodolist = {id: '111', title: 'New Todolist', todolistFilter: 'all', addedDate: '', order: 0}
 
-    const endTodolists = todolistsReducer(startTodolists, createTodolistAC(titleOfNewTodolist))
+    const endTodolists = todolistsReducer(startTodolists, createTodolistAC(newTodolist))
 
     expect(endTodolists.length).toBe(3)
-    expect(endTodolists[0].title).toBe(titleOfNewTodolist)
+    expect(endTodolists[0].title).toBe('New Todolist')
     expect(endTodolists[0].todolistFilter).toBe('all')
 })
 

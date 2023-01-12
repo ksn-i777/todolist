@@ -85,7 +85,7 @@ export function tasksReducer(objTasks:TasksType = initializationState, action:Ta
             return copyObjTasks
         case CREATE_TODOLIST:
             copyObjTasks = {...objTasks}
-            copyObjTasks[action.todolistID] = []
+            copyObjTasks[action.todolist.id] = []
             return copyObjTasks
         case DELETE_TODOLIST:
             copyObjTasks = {...objTasks}
@@ -113,8 +113,8 @@ export function updateTaskStatusAC(todolistID:string, taskID:string, taskStatus:
 }
 
 export const getTasksTC = (todolistID:string) => (dispatch: AppDispatch) => {
-    tasksAPI.getTasks(todolistID).then(tasks => {
-        dispatch(getTasksAC(todolistID, tasks))
+    tasksAPI.getTasks(todolistID).then(res => {
+        dispatch(getTasksAC(todolistID, res.data.items))
     })
 }
 export const createTaskTC = (todolistID:string, titleOfNewTask:string) => (dispatch: AppDispatch) => {
