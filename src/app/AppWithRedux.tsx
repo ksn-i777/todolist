@@ -1,9 +1,8 @@
-import React, {useCallback, useEffect} from 'react'
-import './App.css'
-import { Todolist } from './components/Todolist'
-import { UniversalAddItemForm } from './components/UniversalAddItemForm'
-import { AppBarComponent } from './components/AppBarComponent'
-import { Container, Grid, Paper } from '@mui/material';
+import React, { useCallback, useEffect } from 'react'
+import { Todolist } from '../components/Todolist'
+import { UniversalAddItemForm } from '../components/other/UniversalAddItemForm'
+import { AppBarComponent } from '../components/other/AppBarComponent'
+import { Container, Grid, Paper } from '@mui/material'
 import {
     getTodolistsTC,
     createTodolistTC,
@@ -11,12 +10,12 @@ import {
     updateTodolistTitleTC,
     updateTodolistFilterTC,
     TodolistType,
-    TodolistFilterValuesType,
-} from './store/todolists-reducer'
-import { createTaskTC, deleteTaskTC, updateTaskTitleTC, updateTaskStatusTC, TasksType } from './store/tasks-reducer'
+    TodolistFilterValuesType
+} from '../store/todolists-reducer'
+import { createTaskTC, deleteTaskTC, updateTaskTitleTC, updateTaskStatusTC, TasksType } from '../store/tasks-reducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootStateType } from './store/store'
-import { TaskStatus } from './api/api';
+import { AppDispatch, RootStateType } from '../store/store'
+import { TaskStatus } from '../api/api'
 
 export function AppWithRedux() {
 

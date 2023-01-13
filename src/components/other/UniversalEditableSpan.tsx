@@ -10,18 +10,23 @@ export const UniversalEditableSpan = React.memo(function(props:UniversalEditable
     console.log('editableSpan')
 
     const [editMode, setEditMode] = useState<boolean>(false)
+    const [title, setTitle] = useState<string>(props.spanTitle)
 
     function onOpenEditMode():void {
         setEditMode(true)
     }
     function onCloseEditMode():void {
         setEditMode(false)
+        props.changeSpanTitle(title)
     }
     function onChangeSpanTitle(e:ChangeEvent<HTMLInputElement>):void {
-        props.changeSpanTitle(e.currentTarget.value)
+        setTitle(e.currentTarget.value)
     }
     function onKeyDownSpanTitle(e:KeyboardEvent<HTMLDivElement>):void {
-        if (e.code === 'Enter') {setEditMode(false)}
+        if (e.code === 'Enter') {
+            setEditMode(false)
+            props.changeSpanTitle(title)
+        }
     }
 
     const inputStyle = {
@@ -42,7 +47,7 @@ export const UniversalEditableSpan = React.memo(function(props:UniversalEditable
                 variant="standard"
                 size="small"
                 style={inputStyle}
-                value={props.spanTitle}
+                value={title}
                 onChange={onChangeSpanTitle}
                 onBlur={onCloseEditMode}
                 onKeyDown={onKeyDownSpanTitle}

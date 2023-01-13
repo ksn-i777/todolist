@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
-import './App.css';
-import {Todolist} from './components/Todolist';
-import {v1} from 'uuid';
-import {UniversalAddItemForm} from './components/UniversalAddItemForm';
-import {AppBarComponent} from './components/AppBarComponent';
-import {Container, Grid, Paper} from '@mui/material';
-import {TodolistFilterValuesType, TodolistType} from './store/todolists-reducer';
-import {TasksType} from './store/tasks-reducer';
-import {TaskPriority, TaskStatus, TaskType} from './api/api';
+import React, { useState } from 'react'
+import { Todolist } from '../components/Todolist'
+import { v1 } from 'uuid'
+import { UniversalAddItemForm} from '../components/other/UniversalAddItemForm'
+import { AppBarComponent } from '../components/other/AppBarComponent'
+import { Container, Grid, Paper } from '@mui/material'
+import { TodolistFilterValuesType, TodolistType } from '../store/todolists-reducer'
+import { TasksType } from '../store/tasks-reducer'
+import { TaskPriority, TaskStatus, TaskType } from '../api/api'
 
 export function App() {
 

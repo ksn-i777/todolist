@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import {UniversalAddItemForm} from '../components/UniversalAddItemForm';
+import {UniversalAddItemForm} from '../components/other/UniversalAddItemForm';
 import {action} from '@storybook/addon-actions';
 
 export default {

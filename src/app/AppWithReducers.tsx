@@ -1,10 +1,9 @@
-import React, { useReducer } from 'react';
-import './App.css';
-import { Todolist } from './components/Todolist';
-import { v1 } from 'uuid';
-import { UniversalAddItemForm } from './components/UniversalAddItemForm';
-import { AppBarComponent } from './components/AppBarComponent';
-import { Container, Grid, Paper } from '@mui/material';
+import React, { useReducer } from 'react'
+import { Todolist } from '../components/Todolist'
+import { v1 } from 'uuid'
+import { UniversalAddItemForm } from '../components/other/UniversalAddItemForm'
+import { AppBarComponent } from '../components/other/AppBarComponent'
+import { Container, Grid, Paper } from '@mui/material'
 import {
     todolistsReducer,
     createTodolistAC,
@@ -12,9 +11,9 @@ import {
     updateTodolistTitleAC,
     updateTodolistFilterAC,
     TodolistFilterValuesType
-} from './store/todolists-reducer';
-import { tasksReducer, createTaskAC, deleteTaskAC, updateTaskTitleAC, updateTaskStatusAC } from './store/tasks-reducer';
-import {TaskPriority, TaskStatus} from './api/api';
+} from '../store/todolists-reducer'
+import { tasksReducer, createTaskAC, deleteTaskAC, updateTaskTitleAC, updateTaskStatusAC } from '../store/tasks-reducer'
+import {TaskPriority, TaskStatus} from '../api/api'
 
 export function AppWithReducers() {
 

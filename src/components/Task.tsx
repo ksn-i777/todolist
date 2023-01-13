@@ -1,9 +1,8 @@
-import React, {ChangeEvent, useCallback} from 'react';
-import '../App.css';
-import {UniversalEditableSpan} from './UniversalEditableSpan';
-import {Delete} from '@mui/icons-material';
-import {Checkbox, IconButton} from '@mui/material';
-import {TaskStatus, TaskType} from '../api/api';
+import React, { ChangeEvent, useCallback } from 'react'
+import { UniversalEditableSpan } from './other/UniversalEditableSpan'
+import { Delete } from '@mui/icons-material'
+import { Checkbox, IconButton } from '@mui/material'
+import { TaskStatus, TaskType } from '../api/api'
 
 type TaskPropsType = {
     task: TaskType
@@ -28,22 +27,22 @@ export const Task = React.memo(function(props:TaskPropsType) {
 
     const styleTask = {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     }
     const styleDoneTask = {
         opacity: '0.5',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         textDecoration: 'line-through',
         color: 'darkorchid',
     }
 
     return (
         <div style={props.task.status === TaskStatus.Completed ? styleDoneTask : styleTask}>
-            <div>
-                <Checkbox color="secondary" checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)}/>
-                <UniversalEditableSpan spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onUpdateTaskTitle(props.task.id, newSpanTitle)}}/>
-            </div>
+            <Checkbox color="secondary" checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)}/>
+            <UniversalEditableSpan spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onUpdateTaskTitle(props.task.id, newSpanTitle)}}/>
             <IconButton aria-label="delete" size="small" color="secondary" onClick={() => onDeleteTask(props.task.id)}><Delete fontSize="small"/></IconButton>
         </div>
     )
