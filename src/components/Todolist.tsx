@@ -7,7 +7,7 @@ import { Button, IconButton } from '@mui/material'
 import { Task } from './Task'
 import { TodolistFilterValuesType } from '../store/todolists-reducer'
 import { TaskStatus, TaskType } from '../api/api'
-import { AppDispatch } from '../store/store'
+import { AppDispatchType } from '../store/store'
 import { getTasksTC } from '../store/tasks-reducer'
 
 type TodolistPropsType = {
@@ -29,7 +29,7 @@ type TodolistPropsType = {
 export const Todolist = React.memo(function(props:TodolistPropsType) {
     console.log('todolist')
 
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatchType>()
 
     useEffect(() => {
         dispatch(getTasksTC(props.todolistId))
@@ -66,9 +66,19 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
         border: '1px solid',
         marginTop: '25px'
     }
+    const styleActiveButton = {
+        minWidth: '40px',
+        maxWidth: '120px',
+        minHeight: '25px',
+        maxHeight: '25px',
+        border: '1px solid darkorchid',
+        marginTop: '25px',
+        color: 'white',
+        backgroundColor: 'darkorchid',
+    }
 
     return (
-        <div style={{position: 'relative'}}>
+        <div>
             <h3 style={{display: 'inline'}}><UniversalEditableSpan spanTitle={props.todolistTitle} changeSpanTitle={updateTodolistTitle}/></h3>
             <IconButton aria-label="delete" size="small" color="secondary" onClick={deleteTodolist}><Delete fontSize="small"/></IconButton>
             <UniversalAddItemForm what={'task'} callback={createTask}/>
@@ -84,23 +94,23 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
                     />
                 )}
             </div>
-            <div style={{display: 'flex', gap: '5px'}}>
+            <div style={{display: 'flex', gap: '5px', position: 'absolute', bottom: '0'}}>
                 <Button
                     variant="outlined"
                     color="secondary"
-                    style={styleButton}
+                    style={props.todolistFilter === 'all' ? styleActiveButton : styleButton}
                     onClick={() => updateTodolistFilter('all')}>All
                 </Button>
                 <Button
                     variant="outlined"
                     color="secondary"
-                    style={styleButton}
+                    style={props.todolistFilter === 'active' ? styleActiveButton : styleButton}
                     onClick={() => updateTodolistFilter('active')}>Active
                 </Button>
                 <Button
                     variant="outlined"
                     color="secondary"
-                    style={styleButton}
+                    style={props.todolistFilter === 'completed' ? styleActiveButton : styleButton}
                     onClick={() => updateTodolistFilter('completed')}>Completed
                 </Button>
             </div>

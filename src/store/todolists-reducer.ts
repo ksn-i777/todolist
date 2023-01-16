@@ -1,5 +1,5 @@
 import { todolistsAPI, TodolistTypeFromResponse } from '../api/api';
-import { AppDispatch } from './store';
+import { AppDispatchType } from './store';
 
 // constants
 export const GET_TODOLISTS = 'GET-TODOLISTS'
@@ -34,27 +34,27 @@ export const updateTodolistTitleAC = (id:string, title:string) => ({type: UPDATE
 export const updateTodolistFilterAC = (id:string, filter:TodolistFilterValuesType) => ({type: UPDATE_TODOLIST_FILTER, id, filter} as const)
 
 //thunks
-export const getTodolistsTC = () => (dispatch: AppDispatch) => {
+export const getTodolistsTC = () => (dispatch: AppDispatchType) => {
     todolistsAPI.getTodolists().then(res => {
         dispatch(getTodolistsAC(res.data))
     })
 }
-export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDispatch) => {
+export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDispatchType) => {
     todolistsAPI.createTodolist(titleOfNewTodolist).then(res => {
         dispatch(createTodolistAC(res.data.data.item))
     })
 }
-export const deleteTodolistTC = (todolistID:string) => (dispatch: AppDispatch) => {
+export const deleteTodolistTC = (todolistID:string) => (dispatch: AppDispatchType) => {
     todolistsAPI.deleteTodolist(todolistID).then(res => {
         dispatch(deleteTodolistAC(todolistID))
     })
 }
-export const updateTodolistTitleTC = (todolistID:string, newTitle:string) => (dispatch: AppDispatch) => {
+export const updateTodolistTitleTC = (todolistID:string, newTitle:string) => (dispatch: AppDispatchType) => {
     todolistsAPI.updateTodolistTitle(todolistID, newTitle).then(res => {
         dispatch(updateTodolistTitleAC(todolistID, newTitle))
     })
 }
-export const updateTodolistFilterTC = (todolistID:string, newTodolistFilter:TodolistFilterValuesType) => (dispatch: AppDispatch) => {
+export const updateTodolistFilterTC = (todolistID:string, newTodolistFilter:TodolistFilterValuesType) => (dispatch: AppDispatchType) => {
     dispatch(updateTodolistFilterAC(todolistID, newTodolistFilter))
 }
 

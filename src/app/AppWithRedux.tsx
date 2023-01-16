@@ -14,14 +14,14 @@ import {
 } from '../store/todolists-reducer'
 import { createTaskTC, deleteTaskTC, updateTaskTitleTC, updateTaskStatusTC, TasksType } from '../store/tasks-reducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootStateType } from '../store/store'
+import { AppStateType, AppDispatchType } from '../store/store'
 import { TaskStatus } from '../api/api'
 
 export function AppWithRedux() {
 
-    const dispatch = useDispatch<AppDispatch>()
-    const todolists = useSelector<RootStateType, Array<TodolistType>>(state => state.todolists)
-    const tasks = useSelector<RootStateType, TasksType>(state => state.tasks)
+    const dispatch = useDispatch<AppDispatchType>()
+    const todolists = useSelector<AppStateType, Array<TodolistType>>(state => state.todolists)
+    const tasks = useSelector<AppStateType, TasksType>(state => state.tasks)
 
     useEffect(() => {
         dispatch(getTodolistsTC())
@@ -74,7 +74,7 @@ export function AppWithRedux() {
 
                         return (
                             <Paper key={tl.id} style={{padding: '10px'}} elevation={3}>
-                                <Grid item>
+                                <Grid item style={{position: 'relative', paddingBottom: '30px', height: '100%'}}>
                                     <Todolist
                                         todolistId={tl.id}
                                         todolistTitle={tl.title}

@@ -49,7 +49,6 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
         border: '1px solid',
     }
     const inputStyle = {
-        marginBottom: '25px',
         marginRight: '10px'
     }
 
