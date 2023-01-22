@@ -7,14 +7,14 @@ let startObjTasks:TasksType
 beforeEach(() => {
     startObjTasks = {
         'todolistID1': [
-            {id: '1', title: 'CSS', status: TaskStatus.New, completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '2', title: 'JS', status: TaskStatus.Completed, completed: true, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '3', title: 'React', status: TaskStatus.New, completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '1', title: 'CSS', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '2', title: 'JS', status: TaskStatus.Completed, entityStatus: 'idle', completed: true, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '3', title: 'React', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
         ],
         'todolistID2': [
-            {id: '1', title: 'bread', status: TaskStatus.New, completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '2', title: 'milk', status: TaskStatus.Completed, completed: true, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '3', title: 'tea', status: TaskStatus.New, completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '1', title: 'bread', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '2', title: 'milk', status: TaskStatus.Completed, entityStatus: 'idle', completed: true, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '3', title: 'tea', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
         ]
     }
 })
@@ -24,13 +24,13 @@ test('correct task should be deleted from correct array', () => {
     const endObjTasks = tasksReducer(startObjTasks, action)
     expect(endObjTasks).toEqual({
         'todolistID1': [
-            {id: '1', title: 'CSS', status: TaskStatus.New, completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '2', title: 'JS', status: TaskStatus.Completed, completed: true, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '3', title: 'React', status: TaskStatus.New, completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '1', title: 'CSS', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '2', title: 'JS', status: TaskStatus.Completed, entityStatus: 'idle', completed: true, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '3', title: 'React', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
         ],
         'todolistID2': [
-            {id: '1', title: 'bread', status: TaskStatus.New, completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
-            {id: '3', title: 'tea', status: TaskStatus.New, completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '1', title: 'bread', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+            {id: '3', title: 'tea', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
         ]
     })
 })

@@ -15,8 +15,8 @@ beforeEach(() => {
     todolistID1 = v1();
     todolistID2 = v1();
     startTodolists = [
-        {id: todolistID1, title: 'What to learn', todolistFilter: 'all', addedDate: '', order: 0},
-        {id: todolistID2, title: 'What to buy', todolistFilter: 'all', addedDate: '', order: 0},
+        {id: todolistID1, title: 'What to learn', todolistFilter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
+        {id: todolistID2, title: 'What to buy', todolistFilter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
     ]
 })
 

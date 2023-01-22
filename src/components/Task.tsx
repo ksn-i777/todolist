@@ -3,10 +3,12 @@ import { UniversalEditableSpan } from './other/UniversalEditableSpan'
 import { Delete } from '@mui/icons-material'
 import { Checkbox, IconButton } from '@mui/material'
 import { TaskStatus, TaskType } from '../api/api'
+import { RequestStatusType } from '../store/app-reducer'
 
 type TaskPropsType = {
     task: TaskType
     todolistID: string
+    taskEntityStatus: RequestStatusType
     deleteTask(todolistID:string, taskID:string):void
     updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void
     updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void
@@ -41,9 +43,9 @@ export const Task = React.memo(function(props:TaskPropsType) {
 
     return (
         <div style={props.task.status === TaskStatus.Completed ? styleDoneTask : styleTask}>
-            <Checkbox color="secondary" checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)}/>
-            <UniversalEditableSpan spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onUpdateTaskTitle(props.task.id, newSpanTitle)}}/>
-            <IconButton aria-label="delete" size="small" color="secondary" onClick={() => onDeleteTask(props.task.id)}><Delete fontSize="small"/></IconButton>
+            <Checkbox color="secondary" disabled={props.taskEntityStatus === 'loading'} checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)}/>
+            <UniversalEditableSpan disabled={props.taskEntityStatus === 'loading'} spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onUpdateTaskTitle(props.task.id, newSpanTitle)}}/>
+            <IconButton disabled={props.taskEntityStatus === 'loading'} aria-label="delete" size="small" color="secondary" onClick={() => onDeleteTask(props.task.id)}><Delete fontSize="small"/></IconButton>
         </div>
     )
 })

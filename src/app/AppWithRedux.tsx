@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { Todolist } from '../components/Todolist'
-import { UniversalAddItemForm } from '../components/other/UniversalAddItemForm'
 import { AppBarComponent } from '../components/other/AppBarComponent'
+import { AddTodolist } from '../components/other/AddTodolist'
 import { Container, Grid, Paper } from '@mui/material'
 import {
     getTodolistsTC,
@@ -16,6 +16,7 @@ import { createTaskTC, deleteTaskTC, updateTaskTitleTC, updateTaskStatusTC, Task
 import { useDispatch, useSelector } from 'react-redux'
 import { AppStateType, AppDispatchType } from '../store/store'
 import { TaskStatus } from '../api/api'
+import { ErrorSnackbar } from '../components/other/ErrorSnackBar'
 
 export function AppWithRedux() {
 
@@ -55,23 +56,13 @@ export function AppWithRedux() {
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBarComponent/>
             <Container style={{padding: '30px', margin: '0', maxWidth: '100%'}} fixed>
-                <Grid container>
-                    <Paper style={{padding: '10px', backgroundColor: ''}} elevation={3}>
-                        <Grid item>
-                            <div>
-                                <h3 style={{margin: '0 0 5px 0'}}>Add new todolist</h3>
-                                <UniversalAddItemForm what={'todolist name'} callback={createTodolist}/>
-                            </div>
-                        </Grid>
-                    </Paper>
-                </Grid>
+                <AddTodolist createTodolist={createTodolist}/>
                 <Grid style={{marginTop: '30px', justifyContent: 'flex-start', gap: '30px'}} container>
                     {todolists.map(tl => {
-
                         let tasksForTodolist = tasks[tl.id];
-
                         return (
                             <Paper key={tl.id} style={{padding: '10px'}} elevation={3}>
                                 <Grid item style={{position: 'relative', paddingBottom: '30px', height: '100%'}}>
@@ -79,6 +70,7 @@ export function AppWithRedux() {
                                         todolistId={tl.id}
                                         todolistTitle={tl.title}
                                         todolistFilter={tl.todolistFilter}
+                                        todolistEntityStatus={tl.entityStatus}
                                         tasks={tasksForTodolist}
 
                                         deleteTodolist={deleteTodolist}
@@ -99,3 +91,4 @@ export function AppWithRedux() {
         </div>
     );
 }
+

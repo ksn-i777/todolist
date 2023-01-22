@@ -1,9 +1,10 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {TextField} from '@mui/material';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import {TextField} from '@mui/material'
 
 type UniversalEditableSpanPropsType = {
-    spanTitle:string,
-    changeSpanTitle(newSpanTitle:string):void,
+    spanTitle:string
+    changeSpanTitle(newSpanTitle:string):void
+    disabled?:boolean
 }
 
 export const UniversalEditableSpan = React.memo(function(props:UniversalEditableSpanPropsType) {
@@ -13,7 +14,8 @@ export const UniversalEditableSpan = React.memo(function(props:UniversalEditable
     const [title, setTitle] = useState<string>(props.spanTitle)
 
     function onOpenEditMode():void {
-        setEditMode(true)
+        !props.disabled && setEditMode(true)
+        return
     }
     function onCloseEditMode():void {
         setEditMode(false)

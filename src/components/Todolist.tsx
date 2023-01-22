@@ -6,24 +6,26 @@ import { Delete } from '@mui/icons-material'
 import { Button, IconButton } from '@mui/material'
 import { Task } from './Task'
 import { TodolistFilterValuesType } from '../store/todolists-reducer'
-import { TaskStatus, TaskType } from '../api/api'
+import { TaskStatus } from '../api/api'
 import { AppDispatchType } from '../store/store'
-import { getTasksTC } from '../store/tasks-reducer'
+import { DomainTaskType, getTasksTC } from '../store/tasks-reducer'
+import { RequestStatusType } from '../store/app-reducer'
 
 type TodolistPropsType = {
-    todolistId:string,
-    todolistTitle:string,
-    todolistFilter:TodolistFilterValuesType,
-    tasks:Array<TaskType>,
+    todolistId:string
+    todolistTitle:string
+    todolistFilter:TodolistFilterValuesType
+    todolistEntityStatus:RequestStatusType
+    tasks:Array<DomainTaskType>
 
     deleteTodolist(todolistID:string):void,
-    updateTodolistTitle(todolistID:string, newTodolistTitle:string):void,
-    updateTodolistFilter(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void,
+    updateTodolistTitle(todolistID:string, newTodolistTitle:string):void
+    updateTodolistFilter(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void
 
-    createTask(todolistID:string, titleOfNewTask:string):void,
-    deleteTask(todolistID:string, taskID:string):void,
-    updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void,
-    updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void,
+    createTask(todolistID:string, titleOfNewTask:string):void
+    deleteTask(todolistID:string, taskID:string):void
+    updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void
+    updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void
 };
 
 export const Todolist = React.memo(function(props:TodolistPropsType) {
@@ -79,15 +81,16 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
 
     return (
         <div>
-            <h3 style={{display: 'inline'}}><UniversalEditableSpan spanTitle={props.todolistTitle} changeSpanTitle={updateTodolistTitle}/></h3>
-            <IconButton aria-label="delete" size="small" color="secondary" onClick={deleteTodolist}><Delete fontSize="small"/></IconButton>
-            <UniversalAddItemForm what={'task'} callback={createTask}/>
+            <h3 style={{display: 'inline'}}><UniversalEditableSpan disabled={props.todolistEntityStatus === 'loading'} spanTitle={props.todolistTitle} changeSpanTitle={updateTodolistTitle}/></h3>
+            <IconButton disabled={props.todolistEntityStatus === 'loading'} aria-label="delete" size="small" color="secondary" onClick={deleteTodolist}><Delete fontSize="small"/></IconButton>
+            <UniversalAddItemForm what={'task'} disabled={props.todolistEntityStatus === 'loading'} callback={createTask}/>
             <div>
                 {filteredTasksByFilter.map(task =>
                     <Task
                         key={task.id}
                         todolistID={props.todolistId}
                         task={task}
+                        taskEntityStatus={task.entityStatus}
                         deleteTask={props.deleteTask}
                         updateTaskTitle={props.updateTaskTitle}
                         updateTaskStatus={props.updateTaskStatus}

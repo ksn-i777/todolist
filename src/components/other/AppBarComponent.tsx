@@ -1,8 +1,13 @@
-import React from 'react';
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from '@mui/material';
-import {Menu} from '@mui/icons-material';
+import React from 'react'
+import { AppBar, Box, Button, IconButton, LinearProgress, Toolbar, Typography } from '@mui/material'
+import { Menu } from '@mui/icons-material'
+import { useSelector } from 'react-redux'
+import { AppStateType } from '../../store/store'
+import { RequestStatusType } from '../../store/app-reducer'
 
 export function AppBarComponent() {
+
+    const requestStatus = useSelector<AppStateType, RequestStatusType>(st => st.app.requestStatus)
 
     return (
         <Box sx={{flexGrow: 1}}>
@@ -21,6 +26,7 @@ export function AppBarComponent() {
                     </Typography>
                     <Button color="secondary">Login</Button>
                 </Toolbar>
+                {requestStatus === 'loading' && <LinearProgress color="secondary"/>}
             </AppBar>
         </Box>
     )

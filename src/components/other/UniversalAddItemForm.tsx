@@ -1,9 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, TextField} from '@mui/material';
+import { BorderColor } from '@mui/icons-material';
 
 type UniversalAddItemFormPropsType = {
     what:string
     callback(newInputText:string):void
+    disabled?:boolean
 }
 
 export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFormPropsType) {
@@ -49,7 +51,7 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
         border: '1px solid',
     }
     const inputStyle = {
-        marginRight: '10px'
+        marginRight: '10px',
     }
 
     return (
@@ -62,6 +64,7 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
                 placeholder={error ? errorMessage : ''}
             />*/}
             <TextField
+                disabled={props.disabled}
                 error={!!error}
                 variant="outlined"
                 size="small"
@@ -71,7 +74,7 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
                 onChange={onChangeInput}
                 onKeyPress={onKeyPress}/>
             {/*<button onClick={onAddItem}>+</button>*/}
-            <Button style={buttonStyle} color='secondary' onClick={onAddItem}>+</Button>
+            <Button disabled={props.disabled} style={buttonStyle} color='secondary' onClick={onAddItem}>+</Button>
         </div>
     )
 })
