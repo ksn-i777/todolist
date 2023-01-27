@@ -32,7 +32,11 @@ const initialGlobalState = {
     },
     app: {
         requestStatus: 'idle' as RequestStatusType,
-        error: null as ErrorType
+        error: null as ErrorType,
+        initialized: false,
+    },
+    auth: {
+        isLogin: false
     }
 }
 

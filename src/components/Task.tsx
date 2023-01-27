@@ -15,7 +15,6 @@ type TaskPropsType = {
 }
 
 export const Task = React.memo(function(props:TaskPropsType) {
-    console.log('task')
 
     const onDeleteTask = useCallback(function(taskID:string):void {
         props.deleteTask(props.todolistID, taskID);

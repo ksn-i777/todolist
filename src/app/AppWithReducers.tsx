@@ -2,7 +2,7 @@ import React, { useReducer } from 'react'
 import { Todolist } from '../components/Todolist'
 import { v1 } from 'uuid'
 import { UniversalAddItemForm } from '../components/other/UniversalAddItemForm'
-import { AppBarComponent } from '../components/other/AppBarComponent'
+import { AppBarComponent } from '../components/AppBarComponent'
 import { Container, Grid, Paper } from '@mui/material'
 import {
     todolistsReducer,

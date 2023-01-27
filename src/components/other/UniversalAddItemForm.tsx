@@ -1,6 +1,5 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button, TextField} from '@mui/material';
-import { BorderColor } from '@mui/icons-material';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import {Button, TextField} from '@mui/material'
 
 type UniversalAddItemFormPropsType = {
     what:string
@@ -9,17 +8,16 @@ type UniversalAddItemFormPropsType = {
 }
 
 export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFormPropsType) {
-    console.log('addForm')
 
-    const [newInputText, setNewInputText] = useState<string>('');
-    const [error, setError] = useState<string>('');
+    const [newInputText, setNewInputText] = useState<string>('')
+    const [error, setError] = useState<string>('')
 
-    const errorMessage:string = 'Field is required';
+    const errorMessage:string = 'Field is required'
 
     function onAddItem():void {
         if (newInputText.trim() !== '') {
-            props.callback(newInputText.trim());
-            setNewInputText('');
+            props.callback(newInputText.trim())
+            setNewInputText('')
         } else {
             setError(errorMessage)
         }
@@ -27,7 +25,7 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
 
     function onChangeInput(e:ChangeEvent<HTMLInputElement>):void {
         if (e.currentTarget.value.trim() !== '') {
-            setNewInputText(e.currentTarget.value);
+            setNewInputText(e.currentTarget.value)
         } else {
             setNewInputText('')
         }

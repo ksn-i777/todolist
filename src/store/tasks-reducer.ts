@@ -4,12 +4,13 @@ import { AppStateType, AppDispatchType } from './store'
 import { RequestStatusType, setAppErrorAC, setAppRequestStatusAC } from './app-reducer'
 
 //constants
-export const CREATE_TASK = 'CREATE-TASK'
-export const DELETE_TASK = 'DELETE-TASK'
-export const UPDATE_TASK_TITLE = 'UPDATE-TASK-TITLE'
-export const UPDATE_TASK_STATUS = 'UPDATE-TASK-STATUS'
-export const UPDATE_TASK_ENTITY_STATUS = 'UPDATE-TASK-ENTITY-STATUS'
-export const GET_TASKS = 'GET-TASKS'
+export const GET_TASKS = 'GET_TASKS'
+export const CREATE_TASK = 'CREATE_TASK'
+export const DELETE_TASK = 'DELETE_TASK'
+export const UPDATE_TASK_TITLE = 'UPDATE_TASK_TITLE'
+export const UPDATE_TASK_STATUS = 'UPDATE_TASK_STATUS'
+export const UPDATE_TASK_ENTITY_STATUS = 'UPDATE_TASK_ENTITY_STATUS'
+export const LOGOUT_TASKS_CLEAR = 'LOGOUT_TASKS_CLEAR'
 
 
 //reducer
@@ -37,6 +38,8 @@ export function tasksReducer(objTasks:TasksType = {}, action:TasksActionsType):T
             let copyObjTasks2 = {...objTasks}
             delete copyObjTasks2[action.id]
             return copyObjTasks2
+        case LOGOUT_TASKS_CLEAR:
+            return {}
         default:
             return objTasks
     }
@@ -49,6 +52,7 @@ export const deleteTaskAC = (todolistID:string, taskID:string) => ({type: DELETE
 export const updateTaskTitleAC = (todolistID:string, taskID:string, taskTitle:string) => ({type: UPDATE_TASK_TITLE, todolistID, taskID, taskTitle} as const)
 export const updateTaskStatusAC = (todolistID:string, taskID:string, taskStatus:TaskStatus) => ({type: UPDATE_TASK_STATUS, todolistID, taskID, taskStatus} as const)
 export const updateTaskEntityStatusAC = (todolistID:string, taskID:string, entityStatus:RequestStatusType) => ({type: UPDATE_TASK_ENTITY_STATUS, todolistID, taskID, entityStatus} as const)
+export const logoutTasksClearAC = () => ({type: LOGOUT_TASKS_CLEAR} as const)
 
 //thunks
 export const getTasksTC = (todolistID:string) => (dispatch: AppDispatchType) => {
@@ -89,7 +93,7 @@ export const createTaskTC = (todolistID:string, titleOfNewTask:string) => (dispa
 
 export const deleteTaskTC = (todolistID:string, taskID:string) => (dispatch: AppDispatchType) => {
     dispatch(setAppRequestStatusAC('loading'))
-    dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'loading'))
+    dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'loading'))
     tasksAPI.deleteTask(todolistID, taskID)
         .then(res => {
             if(res.data.resultCode === 0) {
@@ -98,13 +102,13 @@ export const deleteTaskTC = (todolistID:string, taskID:string) => (dispatch: App
             } else {
                 dispatch(res.data.messages.length > 0 ? setAppErrorAC(res.data.messages[0]) : setAppErrorAC('some error'))
                 dispatch(setAppRequestStatusAC('failed'))
-                dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'failed'))
+                dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'failed'))
             }
         })
         .catch(error => {
             dispatch(setAppErrorAC(error.message))
             dispatch(setAppRequestStatusAC('failed'))
-            dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'failed'))
+            dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'failed'))
         })
 }
 
@@ -129,17 +133,17 @@ export const updateTaskTitleTC = (todolistID:string, taskID:string, taskTitle:st
         }
     } else {return}
     dispatch(setAppRequestStatusAC('loading'))
-    dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'loading'))
+    dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'loading'))
     tasksAPI.updateTask(todolistID, taskID, updatedTask)
         .then(res => {
             if(res.data.resultCode === 0) {
                 dispatch(updateTaskTitleAC(todolistID, taskID, taskTitle))
                 dispatch(setAppRequestStatusAC('succeeded'))
-                dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'succeeded'))
+                dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'succeeded'))
             } else {
                 dispatch(res.data.messages.length > 0 ? setAppErrorAC(res.data.messages[0]) : setAppErrorAC('some error'))
                 dispatch(setAppRequestStatusAC('failed'))
-                dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'failed'))
+                dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'failed'))
             }
         })
         .catch(error => {
@@ -170,24 +174,32 @@ export const updateTaskStatusTC = (todolistID:string, taskID:string, taskStatus:
         }
     } else {return}
     dispatch(setAppRequestStatusAC('loading'))
-    dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'loading'))
+    dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'loading'))
     tasksAPI.updateTask(todolistID, taskID, updatedTask)
         .then(res => {
             if(res.data.resultCode === 0) {
                 dispatch(updateTaskStatusAC(todolistID, taskID, taskStatus))
                 dispatch(setAppRequestStatusAC('succeeded'))
-                dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'succeeded'))
+                dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'succeeded'))
             } else {
                 dispatch(res.data.messages.length > 0 ? setAppErrorAC(res.data.messages[0]) : setAppErrorAC('some error'))
                 dispatch(setAppRequestStatusAC('failed'))
-                dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'failed'))
+                dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'failed'))
             }
         })
         .catch(error => {
             dispatch(setAppErrorAC(error.message))
             dispatch(setAppRequestStatusAC('failed'))
-            dispatch(updateTaskEntityStatusAC(todolistID, taskID, 'failed'))
+            dispatch(updateTaskEntityStatusTC(todolistID, taskID, 'failed'))
         })
+}
+
+export const updateTaskEntityStatusTC = (todolistID:string, taskID:string, entityStatus:RequestStatusType) => (dispatch: AppDispatchType) => {
+    dispatch(updateTaskEntityStatusAC(todolistID, taskID, entityStatus))
+}
+
+export const logoutTasksClearTC = () => (dispatch: AppDispatchType) => {
+    dispatch(logoutTasksClearAC())
 }
 
 //types
@@ -202,6 +214,7 @@ export type TasksActionsType =
 | ReturnType<typeof updateTaskTitleAC>
 | ReturnType<typeof updateTaskStatusAC>
 | ReturnType<typeof updateTaskEntityStatusAC>
+| ReturnType<typeof logoutTasksClearAC>
 | GetTodolistsActionType
 | CreateTodolistActionType
 | DeleteTodolistActionType

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //instance
 const commonInstance = axios.create({
-	baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists/',
+	baseURL: 'https://social-network.samuraijs.com/api/1.1/',
 	withCredentials: true,
 	headers: {
         'API-KEY': '2606b888-8484-4e56-ac3e-483848e15f9a'
@@ -10,33 +10,45 @@ const commonInstance = axios.create({
 })
 
 //api
+export const authAPI = {
+    login(data: LoginType) {
+        return commonInstance.post<ResponseType<{userId: number}>>('auth/login', data)
+    },
+    me() {
+        return commonInstance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me')
+    },
+    logout() {
+        return commonInstance.delete<ResponseType>('auth/login')
+    }
+}
+
 export const todolistsAPI = {
     getTodolists() {
-        return commonInstance.get<Array<TodolistTypeFromResponse>>('')
+        return commonInstance.get<Array<TodolistTypeFromResponse>>('todo-lists/')
     },
     createTodolist(title: string) {
-        return commonInstance.post<ResponseType<{item: TodolistTypeFromResponse}>>('', {title})
+        return commonInstance.post<ResponseType<{item: TodolistTypeFromResponse}>>('todo-lists/', {title})
     },
     deleteTodolist(todolistID:string) {
-        return commonInstance.delete<ResponseType>(todolistID)
+        return commonInstance.delete<ResponseType>('todo-lists/' + todolistID)
     },
     updateTodolistTitle(todolistID:string, newTitle:string) {
-        return commonInstance.put<ResponseType>(todolistID, {title: newTitle})
+        return commonInstance.put<ResponseType>('todo-lists/' + todolistID, {title: newTitle})
     },
 }
 
 export const tasksAPI = {
     getTasks(todolistID:string) {
-        return commonInstance.get<GetTasksResponseType>(todolistID+'/tasks')
+        return commonInstance.get<GetTasksResponseType>('todo-lists/' + todolistID + '/tasks')
     },
     createTask(todolistID:string, title: string) {
-        return commonInstance.post<ResponseType<{item:TaskType}>>(todolistID + '/tasks', {title})
+        return commonInstance.post<ResponseType<{item:TaskType}>>('todo-lists/' + todolistID + '/tasks', {title})
     },
     deleteTask(todolistID:string, taskID:string) {
-        return commonInstance.delete<ResponseType>(todolistID + '/tasks/' + taskID)
+        return commonInstance.delete<ResponseType>('todo-lists/' + todolistID + '/tasks/' + taskID)
     },
     updateTask(todolistID:string, taskID:string, task:TaskType) {
-        return commonInstance.put<ResponseType<{item:TaskType}>>(todolistID + '/tasks/' + taskID, task)
+        return commonInstance.put<ResponseType<{item:TaskType}>>('todo-lists/' + todolistID + '/tasks/' + taskID, task)
     },
 }
 
@@ -53,6 +65,12 @@ export enum TaskPriority {
     High = 2,
     Urgently = 3,
     Later = 4,
+}
+export type LoginType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
 export type TaskType = {
     description: string
@@ -76,7 +94,6 @@ export type TodolistTypeFromResponse = {
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
-    fieldsErrors: Array<string>
     data: D
 }
 export type GetTasksResponseType = {
