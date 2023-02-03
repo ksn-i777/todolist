@@ -1,7 +1,148 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { todolistsAPI, TodolistTypeFromResponse } from '../api/api'
 import { RequestStatusType, setAppErrorAC, setAppRequestStatusAC } from './app-reducer'
 import { AppDispatchType } from './store'
 
+/* ---------- REDUX TOOLKIT ---------- */
+
+const initialState = [] as Array<TodolistType>
+
+//slice
+const slice = createSlice({
+    name: "TODOS",
+    initialState: initialState,
+    reducers: {
+        getTodolistsAC: (draftState, action: PayloadAction<{todolists:Array<TodolistTypeFromResponse>}>) => {
+            return action.payload.todolists.map(tl => ({...tl, todolistFilter: 'all', entityStatus: 'idle'}))
+        },
+        createTodolistAC: (draftState, action: PayloadAction<{todolist:TodolistTypeFromResponse}>) => {
+            draftState.unshift({...action.payload.todolist, todolistFilter: 'all', entityStatus: 'idle'})
+        },
+        deleteTodolistAC: (draftState, action: PayloadAction<{id: string}>) => {
+            const index = draftState.findIndex(tl => tl.id === action.payload.id)
+            if(index > -1) {draftState.splice(index, 1)}
+        },
+        updateTodolistTitleAC: (draftState, action: PayloadAction<{id:string, title:string}>) => {
+            const index = draftState.findIndex(tl => tl.id === action.payload.id)
+            if(index > -1) {draftState[index].title = action.payload.title}
+        },
+        updateTodolistFilterAC: (draftState, action: PayloadAction<{id:string, filter:TodolistFilterValuesType}>) => {
+            const index = draftState.findIndex(tl => tl.id === action.payload.id)
+            if(index > -1) {draftState[index].todolistFilter = action.payload.filter}
+        },
+        updateTodolistEntityStatusAC: (draftState, action: PayloadAction<{id:string, entityStatus:RequestStatusType}>) => {
+            const index = draftState.findIndex(tl => tl.id === action.payload.id)
+            if(index > -1) {draftState[index].entityStatus = action.payload.entityStatus}
+        },
+        logoutTodolistsClearAC: (draftState, action: PayloadAction) => {
+            return []
+        },
+    }
+})
+
+// reducer
+export const todolistsReducer = slice.reducer
+
+// actions
+export const {
+    getTodolistsAC,
+    createTodolistAC,
+    deleteTodolistAC,
+    updateTodolistTitleAC,
+    updateTodolistFilterAC,
+    updateTodolistEntityStatusAC,
+    logoutTodolistsClearAC
+} = slice.actions
+
+//thunks
+export const getTodolistsTC = () => (dispatch: AppDispatchType) => {
+    dispatch(setAppRequestStatusAC({requestStatus: 'loading'}))
+    todolistsAPI.getTodolists()
+        .then(res => {
+            dispatch(getTodolistsAC({todolists: res.data}))
+            dispatch(setAppRequestStatusAC({requestStatus: 'succeeded'}))
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+        })
+}
+export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDispatchType) => {
+    dispatch(setAppRequestStatusAC({requestStatus: 'loading'}))
+    todolistsAPI.createTodolist(titleOfNewTodolist)
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(createTodolistAC({todolist: res.data.data.item}))
+                dispatch(setAppRequestStatusAC({requestStatus: 'succeeded'}))
+            } else {
+                dispatch(setAppErrorAC({error: res.data.messages.length > 0 ? res.data.messages[0] : 'some error'}))
+                dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+            }
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+        })
+}
+export const deleteTodolistTC = (todolistID:string) => (dispatch: AppDispatchType) => {
+    dispatch(setAppRequestStatusAC({requestStatus: 'loading'}))
+    dispatch(updateTodolistEntityStatusTC(todolistID, 'loading'))
+    todolistsAPI.deleteTodolist(todolistID)
+        .then(res => {
+            if(res.data.resultCode === 0) {
+                dispatch(deleteTodolistAC({id: todolistID}))
+                dispatch(setAppRequestStatusAC({requestStatus: 'succeeded'}))
+            } else {
+                dispatch(setAppErrorAC({error: res.data.messages.length > 0 ? res.data.messages[0] : 'some error'}))
+                dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+                dispatch(updateTodolistEntityStatusTC(todolistID, 'failed'))
+            }
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+            dispatch(updateTodolistEntityStatusTC(todolistID, 'failed'))
+        })
+}
+export const updateTodolistTitleTC = (todolistID:string, newTitle:string) => (dispatch: AppDispatchType) => {
+    dispatch(setAppRequestStatusAC({requestStatus: 'loading'}))
+    dispatch(updateTodolistEntityStatusTC(todolistID, 'loading'))
+    todolistsAPI.updateTodolistTitle(todolistID, newTitle)
+        .then(res => {
+            if(res.data.resultCode === 0) {
+                dispatch(updateTodolistTitleAC({id: todolistID, title: newTitle}))
+                dispatch(setAppRequestStatusAC({requestStatus: 'succeeded'}))
+                dispatch(updateTodolistEntityStatusTC(todolistID, 'succeeded'))
+            } else {
+                dispatch(setAppErrorAC({error: res.data.messages.length > 0 ? res.data.messages[0] : 'some error'}))
+                dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+                dispatch(updateTodolistEntityStatusTC(todolistID, 'failed'))
+            }
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppRequestStatusAC({requestStatus: 'failed'}))
+            dispatch(updateTodolistEntityStatusTC(todolistID, 'failed'))
+        })
+}
+export const updateTodolistFilterTC = (todolistID:string, newTodolistFilter:TodolistFilterValuesType) => (dispatch: AppDispatchType) => {
+    dispatch(updateTodolistFilterAC({id: todolistID, filter: newTodolistFilter}))
+}
+export const updateTodolistEntityStatusTC = (id:string, entityStatus:RequestStatusType) => (dispatch: AppDispatchType) => {
+    dispatch(updateTodolistEntityStatusAC({id: id, entityStatus: entityStatus}))
+}
+export const logoutTodolistsClearTC = () => (dispatch: AppDispatchType) => {
+    dispatch(logoutTodolistsClearAC())
+}
+
+// types
+export type TodolistType = TodolistTypeFromResponse & {todolistFilter: TodolistFilterValuesType, entityStatus: RequestStatusType}
+export type TodolistFilterValuesType = 'all' | 'active' | 'completed'
+
+
+
+/* ---------- REDUX ---------- */
+/* 
 // constants
 export const GET_TODOLISTS = 'GET_TODOLISTS'
 export const CREATE_TODOLIST = 'CREATE_TODOLIST'
@@ -55,7 +196,6 @@ export const getTodolistsTC = () => (dispatch: AppDispatchType) => {
             dispatch(setAppRequestStatusAC('failed'))
         })
 }
-
 export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDispatchType) => {
     dispatch(setAppRequestStatusAC('loading'))
     todolistsAPI.createTodolist(titleOfNewTodolist)
@@ -73,7 +213,6 @@ export const createTodolistTC = (titleOfNewTodolist:string) => (dispatch: AppDis
             dispatch(setAppRequestStatusAC('failed'))
         })
 }
-
 export const deleteTodolistTC = (todolistID:string) => (dispatch: AppDispatchType) => {
     dispatch(setAppRequestStatusAC('loading'))
     dispatch(updateTodolistEntityStatusTC(todolistID, 'loading'))
@@ -94,7 +233,6 @@ export const deleteTodolistTC = (todolistID:string) => (dispatch: AppDispatchTyp
             dispatch(updateTodolistEntityStatusTC(todolistID, 'failed'))
         })
 }
-
 export const updateTodolistTitleTC = (todolistID:string, newTitle:string) => (dispatch: AppDispatchType) => {
     dispatch(setAppRequestStatusAC('loading'))
     dispatch(updateTodolistEntityStatusTC(todolistID, 'loading'))
@@ -116,15 +254,12 @@ export const updateTodolistTitleTC = (todolistID:string, newTitle:string) => (di
             dispatch(updateTodolistEntityStatusTC(todolistID, 'failed'))
         })
 }
-
 export const updateTodolistFilterTC = (todolistID:string, newTodolistFilter:TodolistFilterValuesType) => (dispatch: AppDispatchType) => {
     dispatch(updateTodolistFilterAC(todolistID, newTodolistFilter))
 }
-
 export const updateTodolistEntityStatusTC = (id:string, entityStatus:RequestStatusType) => (dispatch: AppDispatchType) => {
     dispatch(updateTodolistEntityStatusAC(id, entityStatus))
 }
-
 export const logoutTodolistsClearTC = () => (dispatch: AppDispatchType) => {
     dispatch(logoutTodolistsClearAC())
 }
@@ -143,3 +278,4 @@ export type TodolistActionsType =
 | ReturnType<typeof updateTodolistFilterAC>
 | ReturnType<typeof updateTodolistEntityStatusAC>
 | ReturnType<typeof logoutTodolistsClearAC>
+*/

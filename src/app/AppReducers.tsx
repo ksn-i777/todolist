@@ -17,13 +17,13 @@ import { TaskPriority, TaskStatus } from '../api/api'
 
 export function AppReducers() {
 
-    const todolistID1 = v1();
-    const todolistID2 = v1();
+    const todolistID1 = v1()
+    const todolistID2 = v1()
 
     const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
         { id: todolistID1, title: 'What to learn', todolistFilter: 'all', entityStatus: 'idle', addedDate: '', order: 0 },
         { id: todolistID2, title: 'What to buy', todolistFilter: 'all', entityStatus: 'idle', addedDate: '', order: 0 },
-    ]);
+    ])
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
         [todolistID1]:
@@ -42,38 +42,61 @@ export function AppReducers() {
                 { id: v1(), title: 'Pasta', status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '' },
                 { id: v1(), title: 'Pencil', status: TaskStatus.Completed, entityStatus: 'idle', completed: true, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '' },
             ],
-    });
+    })
 
     function addTodolist(titleOfNewTodolist: string): void {
         const todolist = {
             id: v1(), title: titleOfNewTodolist, status: TaskStatus.Completed, completed: true, todoListId: todolistID2, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
         }
-        dispatchToTodolists(createTodolistAC(todolist))
-        dispatchToTasks(createTodolistAC(todolist))
+        dispatchToTodolists(createTodolistAC({ todolist: todolist })) //redux toolkit
+        dispatchToTasks(createTodolistAC({ todolist: todolist }))     //redux toolkit
+        //dispatchToTodolists(createTodolistAC(todolist))             //redux
+        //dispatchToTasks(createTodolistAC(todolist))                 //redux
     }
     function removeTodolist(todolistID: string): void {
-        dispatchToTodolists(deleteTodolistAC(todolistID));
-        dispatchToTasks(deleteTodolistAC(todolistID));
+        dispatchToTodolists(deleteTodolistAC({ id: todolistID }))     //redux toolkit
+        dispatchToTasks(deleteTodolistAC({ id: todolistID }))         //redux toolkit
+        //dispatchToTodolists(deleteTodolistAC(todolistID))           //redux
+        //dispatchToTasks(deleteTodolistAC(todolistID))               //redux
     }
     function changeTodolistTitle(todolistID: string, newTodolistTitle: string): void {
-        dispatchToTodolists(updateTodolistTitleAC(todolistID, newTodolistTitle))
+        dispatchToTodolists(updateTodolistTitleAC({ id: todolistID, title: newTodolistTitle }))   //redux toolkit
+        //dispatchToTodolists(updateTodolistTitleAC(todolistID, newTodolistTitle))                //redux
     }
     function changeTodolistFilter(todolistID: string, newTodolistFilter: TodolistFilterValuesType): void {
-        dispatchToTodolists(updateTodolistFilterAC(todolistID, newTodolistFilter));
+        dispatchToTodolists(updateTodolistFilterAC({ id: todolistID, filter: newTodolistFilter }))    //redux toolkit
+        //dispatchToTodolists(updateTodolistFilterAC(todolistID, newTodolistFilter))                  //redux
     }
 
     function addTask(todolistID: string, titleOfNewTask: string): void {
-        const task = { id: v1(), title: titleOfNewTask, status: TaskStatus.New, entityStatus: 'idle', completed: false, todoListId: todolistID, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '' }
-        dispatchToTasks(createTaskAC(todolistID, task));
+        const task = {
+            id: v1(),
+            title: titleOfNewTask,
+            status: TaskStatus.New,
+            entityStatus: 'idle',
+            completed: false,
+            todoListId: todolistID,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Low,
+            description: ''
+        }
+        dispatchToTasks(createTaskAC({ todolistID: todolistID, task: task }))     //redux toolkit
+        //dispatchToTasks(createTaskAC(todolistID, task))                       //redux
     }
     function removeTask(todolistID: string, taskID: string): void {
-        dispatchToTasks(deleteTaskAC(todolistID, taskID));
+        dispatchToTasks(deleteTaskAC({ todolistID, taskID }))                     //redux toolkit
+        //dispatchToTasks(deleteTaskAC(todolistID, taskID))                     //redux
     }
     function changeTaskTitle(todolistID: string, taskID: string, newTaskTitle: string): void {
-        dispatchToTasks(updateTaskTitleAC(todolistID, taskID, newTaskTitle))
+        dispatchToTasks(updateTaskTitleAC({ todolistID, taskID, taskTitle: newTaskTitle }))   //redux toolkit
+        //dispatchToTasks(updateTaskTitleAC(todolistID, taskID, newTaskTitle))              //redux
     }
     function changeTaskStatus(todolistID: string, taskID: string, taskStatus: TaskStatus): void {
-        dispatchToTasks(updateTaskStatusAC(todolistID, taskID, taskStatus));
+        dispatchToTasks(updateTaskStatusAC({ todolistID, taskID, taskStatus }))   //redux toolkit
+        //dispatchToTasks(updateTaskStatusAC(todolistID, taskID, taskStatus))   //redux
     }
 
     return (

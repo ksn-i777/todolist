@@ -20,7 +20,7 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-    const action = deleteTaskAC('todolistID2', '2')
+    const action = deleteTaskAC({todolistID: 'todolistID2', taskID: '2'})
     const endObjTasks = tasksReducer(startObjTasks, action)
     expect(endObjTasks).toEqual({
         'todolistID1': [
@@ -37,7 +37,7 @@ test('correct task should be deleted from correct array', () => {
 
 test('correct task should be added to correct array', () => {
     const task = {id: '4', title: 'juce', status: TaskStatus.New, completed: true, todoListId: 'todolistID2', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''}
-    const action = createTaskAC('todolistID2', task)
+    const action = createTaskAC({todolistID: 'todolistID2', task: task})
     const endObjTasks = tasksReducer(startObjTasks, action)
     expect(endObjTasks['todolistID1'].length).toBe(3)
     expect(endObjTasks['todolistID2'].length).toBe(4)
@@ -47,21 +47,21 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const action = updateTaskStatusAC('todolistID2', '2', TaskStatus.New)
+    const action = updateTaskStatusAC({todolistID: 'todolistID2', taskID: '2', taskStatus: TaskStatus.New})
     const endObjTasks = tasksReducer(startObjTasks, action)
     expect(endObjTasks['todolistID1'][1].status).toBe(TaskStatus.Completed)
     expect(endObjTasks['todolistID2'][1].status).toBe(TaskStatus.New)
 })
 
 test('title of specified task should be changed', () => {
-    const action = updateTaskTitleAC('todolistID2', '2', 'beer')
+    const action = updateTaskTitleAC({todolistID: 'todolistID2', taskID: '2', taskTitle: 'beer'})
     const endObjTasks = tasksReducer(startObjTasks, action)
     expect(endObjTasks['todolistID1'][1].title).toBe('JS')
     expect(endObjTasks['todolistID2'][1].title).toBe('beer')
 })
 
 test('property with todolistId should be deleted', () => {
-    const action = deleteTodolistAC('todolistID2')
+    const action = deleteTodolistAC({id: 'todolistID2'})
     const endObjTasks = tasksReducer(startObjTasks, action)
     const keys = Object.keys(endObjTasks)
     expect(keys.length).toBe(1)

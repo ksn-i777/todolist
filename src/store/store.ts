@@ -1,9 +1,10 @@
 import { applyMiddleware, combineReducers, legacy_createStore } from 'redux'
-import { todolistsReducer, TodolistActionsType } from './todolists-reducer'
-import { tasksReducer, TasksActionsType } from './tasks-reducer'
 import thunkMiddlewear, { ThunkDispatch } from 'redux-thunk'
-import { appReducer, AppReducerActionsType } from './app-reducer'
-import { authReducer, AuthReducerActionsType } from './auth-reducer'
+import { configureStore } from '@reduxjs/toolkit'
+import { appReducer } from './app-reducer'
+import { authReducer } from './auth-reducer'
+import { todolistsReducer } from './todolists-reducer'
+import { tasksReducer } from './tasks-reducer'
 
 const rootReduser = combineReducers({
     auth: authReducer,
@@ -12,12 +13,18 @@ const rootReduser = combineReducers({
     tasks: tasksReducer
 })
 
-export const store = legacy_createStore(rootReduser, applyMiddleware(thunkMiddlewear))
+/* ---------- REDUX TOOLKIT ---------- */
 
+export const store = configureStore({
+    reducer: rootReduser,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddlewear)
+})
 export type AppStateType = ReturnType<typeof rootReduser>
+export type AppDispatchType = typeof store.dispatch
 
-export type AppActionsType = TodolistActionsType | TasksActionsType | AppReducerActionsType | AuthReducerActionsType
+/* ---------- REDUX ---------- */
 
-export type AppDispatchType = ThunkDispatch<AppStateType, unknown, AppActionsType>
-
-//export type AppDispatch = typeof store.dispatch // понадобится, когда будет тулкит
+//export const store = legacy_createStore(rootReduser, applyMiddleware(thunkMiddlewear))
+//export type AppStateType = ReturnType<typeof rootReduser>
+//export type AppActionsType = TodolistActionsType | TasksActionsType | AppReducerActionsType | AuthReducerActionsType
+//export type AppDispatchType = ThunkDispatch<AppStateType, unknown, AppActionsType>
