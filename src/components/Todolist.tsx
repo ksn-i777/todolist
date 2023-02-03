@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { UniversalAddItemForm } from './other/UniversalAddItemForm'
-import { UniversalEditableSpan } from './other/UniversalEditableSpan'
+import { AddItemForm } from './AddItemForm'
+import { EditableSpan } from './EditableSpan'
 import { Delete } from '@mui/icons-material'
 import { Button, IconButton } from '@mui/material'
 import { Task } from './Task'
@@ -12,23 +12,23 @@ import { DomainTaskType, getTasksTC } from '../store/tasks-reducer'
 import { RequestStatusType } from '../store/app-reducer'
 
 type TodolistPropsType = {
-    todolistId:string
-    todolistTitle:string
-    todolistFilter:TodolistFilterValuesType
-    todolistEntityStatus:RequestStatusType
-    tasks:Array<DomainTaskType>
+    todolistId: string
+    todolistTitle: string
+    todolistFilter: TodolistFilterValuesType
+    todolistEntityStatus: RequestStatusType
+    tasks: Array<DomainTaskType>
 
-    deleteTodolist(todolistID:string):void,
-    updateTodolistTitle(todolistID:string, newTodolistTitle:string):void
-    updateTodolistFilter(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void
+    deleteTodolist(todolistID: string): void,
+    updateTodolistTitle(todolistID: string, newTodolistTitle: string): void
+    updateTodolistFilter(todolistID: string, newTodolistFilter: TodolistFilterValuesType): void
 
-    createTask(todolistID:string, titleOfNewTask:string):void
-    deleteTask(todolistID:string, taskID:string):void
-    updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void
-    updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void
+    createTask(todolistID: string, titleOfNewTask: string): void
+    deleteTask(todolistID: string, taskID: string): void
+    updateTaskTitle(todolistID: string, taskID: string, newTaskTitle: string): void
+    updateTaskStatus(todolistID: string, taskID: string, taskStatus: TaskStatus): void
 };
 
-export const Todolist = React.memo(function(props:TodolistPropsType) {
+export const Todolist = React.memo(function (props: TodolistPropsType) {
 
     const dispatch = useDispatch<AppDispatchType>()
 
@@ -36,17 +36,17 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
         dispatch(getTasksTC(props.todolistId))
     }, [dispatch, props.todolistId])
 
-    const deleteTodolist = useCallback(function():void {
+    const deleteTodolist = useCallback(function (): void {
         props.deleteTodolist(props.todolistId);
     }, [props.deleteTodolist, props.todolistId])
-    const updateTodolistTitle = useCallback(function(newTodolistTitle:string):void {
+    const updateTodolistTitle = useCallback(function (newTodolistTitle: string): void {
         props.updateTodolistTitle(props.todolistId, newTodolistTitle)
     }, [props.updateTodolistTitle, props.todolistId])
-    const updateTodolistFilter = useCallback(function(newTodolistFilter:TodolistFilterValuesType):void {
+    const updateTodolistFilter = useCallback(function (newTodolistFilter: TodolistFilterValuesType): void {
         props.updateTodolistFilter(props.todolistId, newTodolistFilter);
     }, [props.updateTodolistFilter, props.todolistId])
 
-    const createTask = useCallback(function(titleOfNewTask:string):void {
+    const createTask = useCallback(function (titleOfNewTask: string): void {
         props.createTask(props.todolistId, titleOfNewTask)
     }, [props.createTask, props.todolistId])
 
@@ -80,9 +80,21 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
 
     return (
         <div>
-            <h3 style={{display: 'inline'}}><UniversalEditableSpan disabled={props.todolistEntityStatus === 'loading'} spanTitle={props.todolistTitle} changeSpanTitle={updateTodolistTitle}/></h3>
-            <IconButton disabled={props.todolistEntityStatus === 'loading'} aria-label="delete" size="small" color="secondary" onClick={deleteTodolist}><Delete fontSize="small"/></IconButton>
-            <UniversalAddItemForm what={'task'} disabled={props.todolistEntityStatus === 'loading'} callback={createTask}/>
+            <h3 style={{ display: 'inline' }}>
+                <EditableSpan
+                    disabled={props.todolistEntityStatus === 'loading'}
+                    spanTitle={props.todolistTitle}
+                    changeSpanTitle={updateTodolistTitle}
+                />
+            </h3>
+            <IconButton
+                disabled={props.todolistEntityStatus === 'loading'}
+                aria-label="delete"
+                size="small"
+                color="secondary"
+                onClick={deleteTodolist}><Delete fontSize="small" />
+            </IconButton>
+            <AddItemForm what={'task'} disabled={props.todolistEntityStatus === 'loading'} callback={createTask} />
             <div>
                 {filteredTasksByFilter.map(task =>
                     <Task
@@ -96,7 +108,7 @@ export const Todolist = React.memo(function(props:TodolistPropsType) {
                     />
                 )}
             </div>
-            <div style={{display: 'flex', gap: '5px', position: 'absolute', bottom: '0'}}>
+            <div style={{ display: 'flex', gap: '5px', position: 'absolute', bottom: '0' }}>
                 <Button
                     variant="outlined"
                     color="secondary"

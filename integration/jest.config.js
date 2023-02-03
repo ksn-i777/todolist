@@ -3,4 +3,4 @@ module.exports = {
     testRegex: './*\\.test\\.js$',
     setupFilesAfterEnv: ['./setupTests.js'],
     testTimeout: 80000
- };
+ }

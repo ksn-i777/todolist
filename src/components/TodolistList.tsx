@@ -6,7 +6,7 @@ import { AppDispatchType, AppStateType } from '../store/store'
 import { createTodolistTC, deleteTodolistTC, getTodolistsTC, TodolistFilterValuesType, TodolistType, updateTodolistFilterTC, updateTodolistTitleTC } from '../store/todolists-reducer'
 import { createTaskTC, deleteTaskTC, TasksType, updateTaskStatusTC, updateTaskTitleTC } from '../store/tasks-reducer'
 import { TaskStatus } from '../api/api'
-import { UniversalAddItemForm } from './other/UniversalAddItemForm'
+import { AddItemForm } from './AddItemForm'
 import { Navigate } from 'react-router-dom'
 
 export function TodolistList() {
@@ -17,54 +17,54 @@ export function TodolistList() {
     const dispatch = useDispatch<AppDispatchType>()
 
     useEffect(() => {
-        if(!isLogin) {return}
+        if (!isLogin) { return }
         dispatch(getTodolistsTC())
     }, [dispatch, isLogin])
 
-    const createTodolist = useCallback(function(titleOfNewTodolist:string):void {
+    const createTodolist = useCallback(function (titleOfNewTodolist: string): void {
         dispatch(createTodolistTC(titleOfNewTodolist))
     }, [dispatch])
-    const deleteTodolist = useCallback(function(todolistID:string):void {
+    const deleteTodolist = useCallback(function (todolistID: string): void {
         dispatch(deleteTodolistTC(todolistID));
     }, [dispatch])
-    const updateTodolistTitle = useCallback(function(todolistID:string, newTodolistTitle:string):void {
+    const updateTodolistTitle = useCallback(function (todolistID: string, newTodolistTitle: string): void {
         dispatch(updateTodolistTitleTC(todolistID, newTodolistTitle))
     }, [dispatch])
-    const updateTodolistFilter = useCallback(function(todolistID:string, newTodolistFilter:TodolistFilterValuesType):void {
+    const updateTodolistFilter = useCallback(function (todolistID: string, newTodolistFilter: TodolistFilterValuesType): void {
         dispatch(updateTodolistFilterTC(todolistID, newTodolistFilter));
     }, [dispatch])
 
-    const createTask = useCallback(function(todolistID:string, titleOfNewTask:string):void {
+    const createTask = useCallback(function (todolistID: string, titleOfNewTask: string): void {
         dispatch(createTaskTC(todolistID, titleOfNewTask));
     }, [dispatch])
-    const deleteTask = useCallback(function(todolistID:string, taskID:string):void {
+    const deleteTask = useCallback(function (todolistID: string, taskID: string): void {
         dispatch(deleteTaskTC(todolistID, taskID))
     }, [dispatch])
-    const updateTaskTitle = useCallback(function(todolistID:string, taskID:string, newTaskTitle:string):void {
+    const updateTaskTitle = useCallback(function (todolistID: string, taskID: string, newTaskTitle: string): void {
         dispatch(updateTaskTitleTC(todolistID, taskID, newTaskTitle))
     }, [dispatch])
-    const updateTaskStatus = useCallback(function (todolistID:string, taskID:string, taskStatus:TaskStatus):void {
+    const updateTaskStatus = useCallback(function (todolistID: string, taskID: string, taskStatus: TaskStatus): void {
         dispatch(updateTaskStatusTC(todolistID, taskID, taskStatus));
     }, [dispatch])
-    
-    if(!isLogin) {
-        return <Navigate to='/login'/>
+
+    if (!isLogin) {
+        return <Navigate to='/login' />
     }
 
     return (
-        <Container style={{padding: '30px', margin: '0', maxWidth: '100%'}} fixed>
+        <Container style={{ padding: '30px', margin: '0', maxWidth: '100%' }} fixed>
             <Grid container>
-                <Paper style={{padding: '10px', backgroundColor: ''}} elevation={3}>
-                    <h3 style={{margin: '0 0 5px 0'}}>Add new todolist</h3>
-                    <UniversalAddItemForm what={'todolist name'} callback={createTodolist}/>
+                <Paper style={{ padding: '10px', backgroundColor: '' }} elevation={3}>
+                    <h3 style={{ margin: '0 0 5px 0' }}>Add new todolist</h3>
+                    <AddItemForm what={'todolist name'} callback={createTodolist} />
                 </Paper>
             </Grid>
-            <Grid style={{marginTop: '30px', justifyContent: 'flex-start', gap: '30px'}} container>
+            <Grid style={{ marginTop: '30px', justifyContent: 'flex-start', gap: '30px' }} container>
                 {todolists.map(tl => {
                     let tasksForTodolist = tasks[tl.id];
                     return (
-                        <Paper key={tl.id} style={{padding: '10px'}} elevation={3}>
-                            <Grid item style={{position: 'relative', paddingBottom: '30px', height: '100%'}}>
+                        <Paper key={tl.id} style={{ padding: '10px' }} elevation={3}>
+                            <Grid item style={{ position: 'relative', paddingBottom: '30px', height: '100%' }}>
                                 <Todolist
                                     todolistId={tl.id}
                                     todolistTitle={tl.title}

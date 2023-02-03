@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback } from 'react'
-import { UniversalEditableSpan } from './other/UniversalEditableSpan'
+import { EditableSpan } from './EditableSpan'
 import { Delete } from '@mui/icons-material'
 import { Checkbox, IconButton } from '@mui/material'
 import { TaskStatus, TaskType } from '../api/api'
@@ -9,20 +9,20 @@ type TaskPropsType = {
     task: TaskType
     todolistID: string
     taskEntityStatus: RequestStatusType
-    deleteTask(todolistID:string, taskID:string):void
-    updateTaskTitle(todolistID:string, taskID:string, newTaskTitle:string):void
-    updateTaskStatus(todolistID:string, taskID:string, taskStatus:TaskStatus):void
+    deleteTask(todolistID: string, taskID: string): void
+    updateTaskTitle(todolistID: string, taskID: string, newTaskTitle: string): void
+    updateTaskStatus(todolistID: string, taskID: string, taskStatus: TaskStatus): void
 }
 
-export const Task = React.memo(function(props:TaskPropsType) {
+export const Task = React.memo(function (props: TaskPropsType) {
 
-    const onDeleteTask = useCallback(function(taskID:string):void {
+    const onDeleteTask = useCallback(function (taskID: string): void {
         props.deleteTask(props.todolistID, taskID);
     }, [props.deleteTask, props.todolistID])
-    const onUpdateTaskTitle = useCallback(function(taskID:string, newTaskTitle:string):void {
+    const onUpdateTaskTitle = useCallback(function (taskID: string, newTaskTitle: string): void {
         props.updateTaskTitle(props.todolistID, taskID, newTaskTitle)
     }, [props.updateTaskTitle, props.todolistID])
-    const onUpdateTaskStatus = useCallback(function(taskID:string, e:ChangeEvent<HTMLInputElement>):void {
+    const onUpdateTaskStatus = useCallback(function (taskID: string, e: ChangeEvent<HTMLInputElement>): void {
         props.updateTaskStatus(props.todolistID, taskID, e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New);
     }, [props.updateTaskStatus, props.todolistID])
 
@@ -42,9 +42,9 @@ export const Task = React.memo(function(props:TaskPropsType) {
 
     return (
         <div style={props.task.status === TaskStatus.Completed ? styleDoneTask : styleTask}>
-            <Checkbox color="secondary" disabled={props.taskEntityStatus === 'loading'} checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)}/>
-            <UniversalEditableSpan disabled={props.taskEntityStatus === 'loading'} spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => {onUpdateTaskTitle(props.task.id, newSpanTitle)}}/>
-            <IconButton disabled={props.taskEntityStatus === 'loading'} aria-label="delete" size="small" color="secondary" onClick={() => onDeleteTask(props.task.id)}><Delete fontSize="small"/></IconButton>
+            <Checkbox color="secondary" disabled={props.taskEntityStatus === 'loading'} checked={props.task.status === TaskStatus.Completed} onChange={(e) => onUpdateTaskStatus(props.task.id, e)} />
+            <EditableSpan disabled={props.taskEntityStatus === 'loading'} spanTitle={props.task.title} changeSpanTitle={(newSpanTitle: string) => { onUpdateTaskTitle(props.task.id, newSpanTitle) }} />
+            <IconButton disabled={props.taskEntityStatus === 'loading'} aria-label="delete" size="small" color="secondary" onClick={() => onDeleteTask(props.task.id)}><Delete fontSize="small" /></IconButton>
         </div>
     )
 })

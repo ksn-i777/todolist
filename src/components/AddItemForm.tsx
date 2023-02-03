@@ -1,20 +1,20 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
-import {Button, TextField} from '@mui/material'
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { Button, TextField } from '@mui/material'
 
-type UniversalAddItemFormPropsType = {
-    what:string
-    callback(newInputText:string):void
-    disabled?:boolean
+type AddItemFormPropsType = {
+    what: string
+    callback(newInputText: string): void
+    disabled?: boolean
 }
 
-export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFormPropsType) {
+export const AddItemForm = React.memo(function (props: AddItemFormPropsType) {
 
     const [newInputText, setNewInputText] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const errorMessage:string = 'Field is required'
+    const errorMessage: string = 'Field is required'
 
-    function onAddItem():void {
+    function onAddItem(): void {
         if (newInputText.trim() !== '') {
             props.callback(newInputText.trim())
             setNewInputText('')
@@ -23,7 +23,7 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
         }
     }
 
-    function onChangeInput(e:ChangeEvent<HTMLInputElement>):void {
+    function onChangeInput(e: ChangeEvent<HTMLInputElement>): void {
         if (e.currentTarget.value.trim() !== '') {
             setNewInputText(e.currentTarget.value)
         } else {
@@ -31,8 +31,8 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
         }
     }
 
-    function onKeyPress(e:KeyboardEvent<HTMLInputElement>):void {
-        if (error && e.key !== 'Enter') {setError('')}
+    function onKeyPress(e: KeyboardEvent<HTMLInputElement>): void {
+        if (error && e.key !== 'Enter') { setError('') }
         if (e.key === 'Enter' && newInputText.trim() !== '') {
             onAddItem()
         }
@@ -70,7 +70,7 @@ export const UniversalAddItemForm = React.memo(function(props:UniversalAddItemFo
                 label={error ? errorMessage : `Enter your ${props.what}`}
                 value={newInputText}
                 onChange={onChangeInput}
-                onKeyPress={onKeyPress}/>
+                onKeyPress={onKeyPress} />
             {/*<button onClick={onAddItem}>+</button>*/}
             <Button disabled={props.disabled} style={buttonStyle} color='secondary' onClick={onAddItem}>+</Button>
         </div>

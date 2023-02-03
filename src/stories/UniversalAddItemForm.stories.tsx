@@ -1,12 +1,12 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import {UniversalAddItemForm} from '../components/other/UniversalAddItemForm';
-import {action} from '@storybook/addon-actions';
+import React from 'react'
+import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { AddItemForm } from '../components/AddItemForm'
+import { action } from '@storybook/addon-actions'
 
 export default {
     title: 'Example/AddItemForm',
-    component: UniversalAddItemForm,
-} as ComponentMeta<typeof UniversalAddItemForm>;
+    component: AddItemForm,
+} as ComponentMeta<typeof AddItemForm>
 
 const addItemFormCallback = action('Item form added item with title')
 
@@ -15,9 +15,9 @@ const baseArgs = {
     callback: addItemFormCallback
 }
 
-const Template: ComponentStory<typeof UniversalAddItemForm> = (args) => <UniversalAddItemForm {...args} />;
+const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />
 
-export const addItemFormExample = Template.bind({});
+export const addItemFormExample = Template.bind({})
 addItemFormExample.args = {
     ...baseArgs
-};
+}
