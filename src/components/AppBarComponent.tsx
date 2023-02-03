@@ -17,7 +17,7 @@ export function AppBarComponent() {
     }
 
     return (
-        <Box sx={{flexGrow: 1}}>
+        <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color={'inherit'}>
                 <Toolbar>
                     <IconButton
@@ -25,15 +25,15 @@ export function AppBarComponent() {
                         edge="start"
                         color="secondary"
                         aria-label="menu"
-                        sx={{mr: 2}}
-                    ><Menu/>
+                        sx={{ mr: 2 }}
+                    ><Menu />
                     </IconButton>
-                    <Typography color="secondary" variant="h6" component="div" sx={{flexGrow: 1}}>
+                    <Typography color="secondary" variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Todolists
                     </Typography>
                     {isLogin && <Button onClick={logout} color="secondary">Log out</Button>}
                 </Toolbar>
-                {requestStatus === 'loading' && <LinearProgress color="secondary"/>}
+                {requestStatus === 'loading' && <LinearProgress color="secondary" />}
             </AppBar>
         </Box>
     )

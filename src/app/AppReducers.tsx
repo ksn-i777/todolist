@@ -15,7 +15,7 @@ import {
 import { tasksReducer, createTaskAC, deleteTaskAC, updateTaskTitleAC, updateTaskStatusAC } from '../store/tasks-reducer'
 import { TaskPriority, TaskStatus } from '../api/api'
 
-export function AppWithReducers() {
+export function AppReducers() {
 
     const todolistID1 = v1();
     const todolistID2 = v1();

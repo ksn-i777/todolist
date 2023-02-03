@@ -49,8 +49,8 @@ export const Login = () => {
         },
     })
 
-    if(isLogin) {
-        return <Navigate to='/'/>
+    if (isLogin) {
+        return <Navigate to='/' />
     }
 
     return <Grid container justifyContent={'center'}>
@@ -76,8 +76,8 @@ export const Login = () => {
                             ниже равносильная запись */
                             {...formik.getFieldProps('email')}
                         />
-                        {formik.errors.email && formik.touched.email && <span style={{color: 'red'}}>{formik.errors.email}</span>}
-                        <TextField 
+                        {formik.errors.email && formik.touched.email && <span style={{ color: 'red' }}>{formik.errors.email}</span>}
+                        <TextField
                             type="password"
                             label="Password"
                             margin="normal"
@@ -88,10 +88,10 @@ export const Login = () => {
                             ниже равносильная запись */
                             {...formik.getFieldProps('password')}
                         />
-                        {formik.errors.password && formik.touched.password && <span style={{color: 'red'}}>{formik.errors.password}</span>}
+                        {formik.errors.password && formik.touched.password && <span style={{ color: 'red' }}>{formik.errors.password}</span>}
                         <FormControlLabel
                             label={'Remember me'}
-                            control={<Checkbox {...formik.getFieldProps('rememberMe')} checked={formik.values.rememberMe}/>}
+                            control={<Checkbox {...formik.getFieldProps('rememberMe')} checked={formik.values.rememberMe} />}
                         />
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
