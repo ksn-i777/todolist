@@ -27,17 +27,15 @@ export function AppRedux() {
   }
 
   return (
-    <HashRouter>
-      <div className={s.app}>
-        <ErrorSnackbar />
-        <AppBarComponent />
-        <Routes>
-          <Route path='/' element={<ReduxTodolistList />} />
-          <Route path='/login' element={<Auth />} />
-          <Route path='/404' element={<div style={{ textAlign: 'center' }}><h1>404: PAGE NOT FOUND</h1></div>} />
-          <Route path='*' element={<Navigate to='/404' />} />
-        </Routes>
-      </div>
-    </HashRouter>
+    <div className={s.app}>
+      <ErrorSnackbar />
+      <AppBarComponent />
+      <Routes>
+        <Route path='/' element={<ReduxTodolistList />} />
+        <Route path='/login' element={<Auth />} />
+        <Route path='/404' element={<div style={{ textAlign: 'center' }}><h1>404: PAGE NOT FOUND</h1></div>} />
+        <Route path='*' element={<Navigate to='/404' />} />
+      </Routes>
+    </div>
   )
 }
