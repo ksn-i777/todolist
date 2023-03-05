@@ -1,5 +1,5 @@
-import {tasksReducer, TasksType} from '../store/tasks-reducer';
-import {createTodolistAC, todolistsReducer, TodolistType} from '../store/todolists-reducer';
+import {tasksReducer, TasksType} from '../features/tasks/tasks-reducer';
+import {createTodolistAC, todolistsReducer, TodolistType} from '../features/todolists/todolists-reducer';
 
 test('ids should be equals', () => {
     const startObjTasks:TasksType = {}

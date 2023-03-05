@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 //instance
 const commonInstance = axios.create({
@@ -10,33 +10,6 @@ const commonInstance = axios.create({
 })
 
 //api
-export const authAPI = {
-    login(data: LoginType) {
-        return commonInstance.post<ResponseType<{userId: number}>>('auth/login', data)
-    },
-    me() {
-        return commonInstance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me')
-    },
-    logout() {
-        return commonInstance.delete<ResponseType>('auth/login')
-    }
-}
-
-export const todolistsAPI = {
-    getTodolists() {
-        return commonInstance.get<Array<TodolistTypeFromResponse>>('todo-lists/')
-    },
-    createTodolist(title: string) {
-        return commonInstance.post<ResponseType<{item: TodolistTypeFromResponse}>>('todo-lists/', {title})
-    },
-    deleteTodolist(todolistID:string) {
-        return commonInstance.delete<ResponseType>('todo-lists/' + todolistID)
-    },
-    updateTodolistTitle(todolistID:string, newTitle:string) {
-        return commonInstance.put<ResponseType>('todo-lists/' + todolistID, {title: newTitle})
-    },
-}
-
 export const tasksAPI = {
     getTasks(todolistID:string) {
         return commonInstance.get<GetTasksResponseType>('todo-lists/' + todolistID + '/tasks')
@@ -66,12 +39,6 @@ export enum TaskPriority {
     Urgently = 3,
     Later = 4,
 }
-export type LoginType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
-}
 export type TaskType = {
     description: string
     title: string
@@ -84,12 +51,6 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
-}
-export type TodolistTypeFromResponse = {
-    id: string
-    addedDate: string
-    order: number
-    title: string
 }
 export type ResponseType<D = {}> = {
     resultCode: number

@@ -1,8 +1,8 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import {Task} from '../components/Task';
-import {action} from '@storybook/addon-actions';
-import {TaskPriority, TaskStatus} from '../api/api';
+import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+import { Task } from 'features/tasks/Task'
+import { TaskPriority, TaskStatus } from 'features/tasks/tasks-api'
 
 export default {
     title: 'Example/Task',
@@ -24,12 +24,12 @@ const Template: ComponentStory<typeof Task> = (args) => <Task {...args} />;
 export const taskIsDoneExample = Template.bind({});
 taskIsDoneExample.args = {
     ...baseArgs,
-    task: {id: '1', title: 'HTML&CSS', status: TaskStatus.Completed, completed: true, todoListId: 'todolistId1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+    task: { id: '1', title: 'HTML&CSS', status: TaskStatus.Completed, completed: true, todoListId: 'todolistId1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '' },
     todolistID: 'todolistId1'
 };
 export const taskIsNotDoneExample = Template.bind({});
 taskIsNotDoneExample.args = {
     ...baseArgs,
-    task: {id: '1', title: 'HTML&CSS', status: TaskStatus.New, completed: false, todoListId: 'todolistId1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''},
+    task: { id: '1', title: 'HTML&CSS', status: TaskStatus.New, completed: false, todoListId: 'todolistId1', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '' },
     todolistID: 'todolistId1'
 };

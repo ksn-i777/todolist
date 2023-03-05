@@ -1,6 +1,6 @@
-import {createTaskAC, updateTaskStatusAC, updateTaskTitleAC, deleteTaskAC, tasksReducer, TasksType,} from '../store/tasks-reducer'
-import {deleteTodolistAC} from '../store/todolists-reducer';
-import {TaskPriority, TaskStatus} from '../api/api';
+import {deleteTodolistAC} from 'features/todolists/todolists-reducer'
+import {createTaskAC, updateTaskStatusAC, updateTaskTitleAC, deleteTaskAC, tasksReducer, TasksType,} from 'features/tasks/tasks-reducer'
+import {TaskPriority, TaskStatus} from 'features/tasks/tasks-api'
 
 let startObjTasks:TasksType
 

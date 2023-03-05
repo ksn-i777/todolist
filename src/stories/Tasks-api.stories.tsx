@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {tasksAPI} from '../api/api'
+import React, { useEffect, useState } from 'react'
+import { tasksAPI } from 'features/tasks/tasks-api'
 
 
 export default {
@@ -25,7 +25,7 @@ const task = {
 export const GetTasks = () => {
    const [state, setState] = useState<any>(null)
    useEffect(() => {
-        tasksAPI.getTasks(todolistID).then(res => {setState(res)})
+      tasksAPI.getTasks(todolistID).then(res => { setState(res) })
    }, [])
    return <div>{JSON.stringify(state)}</div>
 }
@@ -33,7 +33,7 @@ export const GetTasks = () => {
 export const CreateTask = () => {
    const [state, setState] = useState<any>(null)
    useEffect(() => {
-        tasksAPI.createTask(todolistID, 'WWWW').then(res => {setState(res.data)})
+      tasksAPI.createTask(todolistID, 'WWWW').then(res => { setState(res.data) })
    }, [])
 
    return <div>{JSON.stringify(state)}</div>
@@ -42,7 +42,7 @@ export const CreateTask = () => {
 export const DeleteTask = () => {
    const [state, setState] = useState<any>(null)
    useEffect(() => {
-        tasksAPI.deleteTask(todolistID, taskID).then(res => {setState(res.data)})
+      tasksAPI.deleteTask(todolistID, taskID).then(res => { setState(res.data) })
    }, [])
 
    return <div>{JSON.stringify(state)}</div>
@@ -51,7 +51,7 @@ export const DeleteTask = () => {
 export const UpdateTaskTitle = () => {
    const [state, setState] = useState<any>(null)
    useEffect(() => {
-        tasksAPI.updateTask(todolistID, taskID, task).then(res => {setState(res.data)})
+      tasksAPI.updateTask(todolistID, taskID, task).then(res => { setState(res.data) })
    }, [])
 
    return <div>{JSON.stringify(state)}</div>
