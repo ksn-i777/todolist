@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import s from './App.module.css'
 import { useSelector } from 'react-redux'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
 import { AppBarComponent, ErrorSnackbar } from 'common/components'
 import * as appSelectors from 'app/selectors'
@@ -27,7 +27,7 @@ export function AppRedux() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className={s.app}>
         <ErrorSnackbar />
         <AppBarComponent />
@@ -38,6 +38,6 @@ export function AppRedux() {
           <Route path='*' element={<Navigate to='/404' />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
